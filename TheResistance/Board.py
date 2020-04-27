@@ -1,3 +1,6 @@
+import random
+from Mission import Mission
+
 class Board:
     num_players = 0
     num_spies = 0
