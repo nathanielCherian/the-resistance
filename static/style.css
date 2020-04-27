@@ -1,0 +1,8 @@
+body{
+	background-color: white;
+}
+
+@font-face {
+  font-family: cofleyMain;
+  src: url("cofley regular 500.woff");
+}
