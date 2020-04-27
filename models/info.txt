@@ -1,0 +1,17 @@
+1.Host starts session creating session object
+
+2.After all players join host starts game adding players(['player1', 'player2'...]) to newley created board object
+
+3.Team leader is randomly chosen by Board object and the player will be allowed to choose a team([player(), player(),...])
+
+4.Players vote on team config. (players[x].teamVote==True/False)
+
+5.Count team votes with b.countTeamVotes return boolean, if True ...
+	-players going on mission will have to play succeed/fail card (updated to players object)
+	-will initialize mission object (through b.goOnMission)and add it to array of mission objects within Board(), 
+5b.if fails call b.changeLeader()
+
+6. b.goOnMission requires list of players going on mission and number of fails required it will return outcome of the mission (True=succeed, False=failed)
+
+7. parts 4-6 can be repeated until game ends
+

@@ -117,15 +117,18 @@ players = b.players
 team = [players[0], players[1], players[2]]
 
 for player in players:  #vote here
-    player.teamVote = True
+    player.teamVote = True # simulating voting
 b.players = players
+
 
 
 if b.countTeamVotes() == True:
     for player in team:
         player.mission_vote(1)
     print(b.goOnMission(team, 1))
+    b.curr_mission += 1
 elif b.countTeamVotes() == False:
+    b.changeLeader()
     print("team vote failed")
 
 for player in team:
