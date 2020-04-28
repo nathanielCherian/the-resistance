@@ -19,5 +19,9 @@ def lobby():
     data = session['data']
     return  'you entered ' + data
 
+@app.route('/getstarted')
+def getstarted():
+    return render_template("getstarted.html")
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
