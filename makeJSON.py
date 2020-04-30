@@ -4,6 +4,7 @@ def updateLobby(pList, roomid):
     dict = {
         'roomid': roomid,
         'status':'updatingLobby',
-        'players': pList
+        'players': pList,
+        'host': pList[0]
     }
     return dict
