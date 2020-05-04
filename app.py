@@ -61,6 +61,10 @@ def lobby():
     return  render_template('lobby.html', roomID=room, name=session['name'])
 
 
+@app.route('/play')
+def play():
+    return "we playing"
+
 def messageReceived(methods=['GET', 'POST']):
     print('message was received!!!')
 
@@ -86,11 +90,22 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
         print(found_player.get_list())
         json = updateLobby(found_player.get_list(), session['room'])
         socketio.emit('my response', (json, 'bar'))
-
         print(json)
 
-
-
+    if json['roomid'] == session['room']: # CHECK FOR ROOM NUMBER
+        
+        if json['status'] == 'leave':
+            found_player = players.query.filter_by(gameCode=session['room']).first()
+            listofPlayers = found_player.get_list()
+            listofPlayers.remove(json['playerName'])
+            print(listofPlayers)
+            found_player.playerList = ""
+            for p in listofPlayers:
+                found_player.playerList += '"' + p + '"'
+            db.session.commit()
+            print (found_player.get_list()[0])
+            json = updateLobby(found_player.get_list(), session['room'])
+            socketio.emit('my response', json)
     #socketio.emit('my response', (d, 'bar', dict))
 
 

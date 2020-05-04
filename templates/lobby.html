@@ -22,7 +22,9 @@
 
     </ul>
 
-
+    <div class="row" style="float: right; margin-right: 5%; margin-top: 10%;">
+      <button id="stgame" >Start Game</button>
+    </div>
 
 
 
@@ -36,6 +38,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 
     <script type="text/javascript">
+
+      var startGame = document.getElementById('stgame')
+      startGame.style.display = "none";
+      //document.getElementById('stgame').innerHTML = "start";
+      //document.getElementById('stgame').setAttribute("onClick", 'window.location.href = "/play"')
+
+      function leaveGame(){
+          socket.emit('my event', {
+            status : 'leave',
+            roomid : roomID,
+            playerName : name
+          })
+          window.location.href = "/"
+        }
+
 
       var socket = io.connect('http://192.168.1.12:5000/');
       var roomID = '{{ roomID }}';
@@ -58,6 +75,20 @@
         //var obj = JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
         console.log( msg )
 
+        if (name == msg.host){
+            if (msg.players.length >= 2){
+              startGame.innerHTML = "Start Game";
+              startGame.setAttribute("onClick", 'window.location.href = "/play"');
+              startGame.style.display = "block";
+          }
+        } else{
+          startGame.innerHTML = "Leave Game";
+          startGame.setAttribute("onClick", 'leaveGame()');
+          startGame.style.display = "block"
+        }
+
+
+
         if (msg.roomid == roomID){
             $("#users").empty();
             for (i = 0; i < msg.players.length; i++){
@@ -75,6 +106,8 @@
       window.onbeforeunload = function() {
             return "Do not leave";
         };
+
+
 
     </script>
 
