@@ -4,17 +4,17 @@ from flask_sqlalchemy import SQLAlchemy
 import csv #for db
 from io import StringIO
 from config import Config
-from makeJSON import updateLobby
 from random import randint
+import json as j
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False 
 socketio = SocketIO(app)
 
 db = SQLAlchemy(app)
+
+import events
 
 class players(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
@@ -31,8 +31,20 @@ class players(db.Model):
         return (self._id)
     
     def get_list(self): # will return a list to pass through websocket
-        reader = csv.reader(StringIO(self.playerList))
-        return list(reader)[0]
+        pJson = j.loads(self.playerList)
+        return pJson['playerList']
+
+    def appendList(self, name):
+        pJson = j.loads(self.playerList)
+        pJson['playerList'].append(name)
+        self.playerList = j.dumps(pJson)
+        db.session.commit()
+
+    def removePlayer(self, name):
+        pJson = j.loads(self.playerList)
+        pJson['playerList'].remove(name)
+        self.playerList = j.dumps(pJson)
+        db.session.commit()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -65,48 +77,6 @@ def lobby():
 def play():
     return "we playing"
 
-def messageReceived(methods=['GET', 'POST']):
-    print('message was received!!!')
-
-
-
-@socketio.on('my event')
-def handle_my_custom_event(json, methods=['GET', 'POST']):
-    print('received my event: ' + str(json))
-    
-    if json['status'] == 'lobby':
-        print("hello\n\n\n")
-        found_player = players.query.filter_by(gameCode=session['room']).first()
-        if found_player:
-            if session['name'] not in found_player.get_list():
-                found_player.playerList = found_player.playerList + ',"' + session['name'] + '"'
-                db.session.commit()
-                print("commited player")
-        else:
-            found_player = players(gameCode=session['room'], playerList='"' + session['name'] + '"', isPlaying=False) #should never get here
-            db.session.add(found_player)
-            db.session.commit()
-            print("new player commit")
-        print(found_player.get_list())
-        json = updateLobby(found_player.get_list(), session['room'])
-        socketio.emit('my response', (json, 'bar'))
-        print(json)
-
-    if json['roomid'] == session['room']: # CHECK FOR ROOM NUMBER
-        
-        if json['status'] == 'leave':
-            found_player = players.query.filter_by(gameCode=session['room']).first()
-            listofPlayers = found_player.get_list()
-            listofPlayers.remove(json['playerName'])
-            print(listofPlayers)
-            found_player.playerList = ""
-            for p in listofPlayers:
-                found_player.playerList += '"' + p + '"'
-            db.session.commit()
-            print (found_player.get_list()[0])
-            json = updateLobby(found_player.get_list(), session['room'])
-            socketio.emit('my response', json)
-    #socketio.emit('my response', (d, 'bar', dict))
 
 
 
@@ -127,7 +97,8 @@ def getstarted():
 
         session['room'] = str(rand) 
 
-        player = players(gameCode=session['room'], playerList='"' + session['name'] + '"', isPlaying=False)
+        pData = j.dumps({'playerList':[session['name']]})
+        player = players(gameCode=session['room'], playerList= pData, isPlaying=False)
         db.session.add(player)
         db.session.commit()
         return redirect(url_for('lobby'))
