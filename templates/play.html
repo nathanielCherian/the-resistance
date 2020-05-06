@@ -18,6 +18,18 @@
 
       </body>
       
+      <script>
+          var name = '{{ name }}';
+          var roomID = '{{ roomID }}'; 
+          var plist = JSON.parse('{{ jData | tojson | safe}}');
+          console.log(plist)
+            function getName(){return name}
+            function getroomID(){return roomID}
+            function getplist(){return plist.players}
+
+      </script>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
       <script src="{{ url_for('static', filename='js/playScript.js') }}"></script>
 
 

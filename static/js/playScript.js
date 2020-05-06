@@ -8,6 +8,17 @@ var updateLayout = function(listItems){
 	};
 };
 
+plist = getplist();
+console.log(plist)
+
+for(i=0; i<plist.length; i++){
+    var listItem = $("<li class='list-item'>" + plist[i] + "<button class='remove-item'>Remove</button></li>");
+	list.append(listItem);
+	var listItems = $(".list-item");
+    updateLayout(listItems);
+    
+}
+
 $(document).on("click", "#add-item", function(){
 	var listItem = $("<li class='list-item'>Things go here<button class='remove-item'>Remove</button></li>");
 	list.append(listItem);
@@ -22,3 +33,26 @@ $(document).on("click", ".remove-item", function(){
 	updateLayout(listItems);
 });
 
+console.log(getroomID())
+console.log(getName())
+
+
+
+var socket = io.connect('http://192.168.1.12:5000/');
+
+socket.on( 'connect', function() {
+    socket.emit( 'my event', {
+        roomid : getroomID(),
+        status : 'connectToPlay',
+        name : getName()
+    }) 
+})
+
+
+socket.on( 'my response', function( msg ) {
+    if (msg.roomid == getroomID()){
+        console.log( msg )
+
+    }
+
+  })

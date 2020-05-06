@@ -81,7 +81,22 @@
         //var obj = JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
         console.log( msg )
 
-        if (name == msg.host){
+
+
+
+        if (msg.roomid == roomID){
+
+          if(msg.status == 'updatingLobby'){
+            $("#users").empty();
+            for (i = 0; i < msg.players.length; i++){
+                if (msg.players[i] == msg.host){
+                    $("#users").append('<li>' + msg.players[i] +'(host)</li>');
+                }else{
+                    $("#users").append('<li>' + msg.players[i] +'</li>');
+                }
+          }
+
+          if (name == msg.host){
             if (msg.players.length >= 2){
               startGame.innerHTML = "Start Game";
               startGame.setAttribute("onClick", 'clicked()');
@@ -95,18 +110,15 @@
           startGame.style.display = "block"
         }
 
+        }
+
+        if(msg.status == 'playCommand'){
+          window.onbeforeunload = null;
+          window.location.href = "/play"
+        }
 
 
-        if (msg.roomid == roomID){
-            $("#users").empty();
-            for (i = 0; i < msg.players.length; i++){
-                if (msg.players[i] == msg.host){
-                    $("#users").append('<li>' + msg.players[i] +'(host)</li>');
-                }else{
-                    $("#users").append('<li>' + msg.players[i] +'</li>');
-                }
-        }
-        }
+      }
 
         
       })

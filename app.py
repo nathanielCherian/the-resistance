@@ -69,13 +69,25 @@ def home():
 
 @app.route('/lobby')
 def lobby():
+    print('name:    ' + session['name'])
     room = session['room']
     return  render_template('lobby.html', roomID=room, name=session['name'])
 
 
 @app.route('/play')
 def play():
-    return render_template('play.html')
+    print('name:    ' + session['name'])
+    plist = players.query.filter_by(gameCode=session['room']).first().get_list()
+    
+    plst = []
+    idx = plist.index(session['name'])
+    for i in range(len(plist)): #to rearrange elemnts in list to make unique for players
+        plst.append(plist[idx])
+        idx -= 1
+    
+    jData = {'players':plst} #serialize data
+    print(jData)
+    return render_template('play.html', roomID=session['room'], name=session['name'], jData=jData)
 
 
 

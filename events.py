@@ -28,12 +28,21 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
 
     if json['roomid'] == session['room']: # CHECK FOR ROOM NUMBER
-        
+
+        found_player = players.query.filter_by(gameCode=session['room']).first() #context of elemnt in database
+
         if json['status'] == 'leave':
-            found_player = players.query.filter_by(gameCode=session['room']).first()
 
             found_player.removePlayer(session['name'])
 
             json = updateLobby(found_player.get_list(), session['room'])
             socketio.emit('my response', json)
-    #socketio.emit('my response', (d, 'bar', dict))
+
+        
+        if json['status'] == 'connectToPlay':
+            if json['name'] == found_player.get_list()[0]: #check if user is host
+                
+                sendMes = {'roomid' : json['roomid'], 'status':'playCommand'}
+                socketio.emit('my response', sendMes)
+            else: #redirect user
+                print("redirect")
