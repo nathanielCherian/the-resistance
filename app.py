@@ -75,7 +75,7 @@ def lobby():
 
 @app.route('/play')
 def play():
-    return "we playing"
+    return render_template('play.html')
 
 
 
@@ -117,6 +117,8 @@ def view():
         db.session.commit()
     
     return render_template("view.html", values=players.query.all())
+
+
 
 if __name__ == '__main__':
     db.create_all()

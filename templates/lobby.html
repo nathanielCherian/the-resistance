@@ -23,7 +23,7 @@
     </ul>
 
     <div class="row" style="float: right; margin-right: 5%; margin-top: 10%;">
-      <button id="stgame" >Start Game</button>
+      <button id="stgame" onclick="clicked()">Start Game</button>
     </div>
 
 
@@ -50,7 +50,13 @@
             roomid : roomID,
             playerName : name
           })
-          window.location.href = "/"
+          window.onbeforeunload = null;
+          window.location.href = "/";
+        }
+
+        function clicked(){
+          window.onbeforeunload = null;
+          window.location.href = "/play"
         }
 
 
@@ -78,8 +84,10 @@
         if (name == msg.host){
             if (msg.players.length >= 2){
               startGame.innerHTML = "Start Game";
-              startGame.setAttribute("onClick", 'window.location.href = "/play"');
+              startGame.setAttribute("onClick", 'clicked()');
               startGame.style.display = "block";
+          } else{
+            startGame.style.display = "none";
           }
         } else{
           startGame.innerHTML = "Leave Game";
