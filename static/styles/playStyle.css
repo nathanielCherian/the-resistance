@@ -9,11 +9,12 @@
 .list-item{
 	list-style: none;
 	background-color: aqua;
-	height: 80px;
-	width: 80px;
+	height: 100px;
+	width: 100px;
 	position: absolute;
 	top: 50%;
     left: 50%;
+    border-radius: 50%;
     transition-duration: 1s;
 }
 
@@ -25,8 +26,8 @@ li:hover{
     background-color: rgb(209, 243, 243);
     top: 48%;
     left: 48%;
-    height: 100px;
-    width: 100px;
+    height: 120px;
+    width: 120px;
 }
 
 

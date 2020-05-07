@@ -1,0 +1,18 @@
+#list{
+	background: none;
+	height: 500px;
+	width: 500px;
+	border-radius: 50%;
+    position: relative;
+}
+
+.list-item{
+	list-style: none;
+	background-color: aqua;
+	height: 80px;
+	width: 80px;
+	position: absolute;
+	top: 50%;
+    left: 50%;
+    transition-duration: 1s;
+}

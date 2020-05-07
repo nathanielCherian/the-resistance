@@ -35,8 +35,11 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
             found_player.removePlayer(session['name'])
 
+            d = {'status':'pleft', "roomid":session['room'], 'name':session['name']}
+
             json = updateLobby(found_player.get_list(), session['room'])
             socketio.emit('my response', json)
+            socketio.emit('my response', d)
 
         
         if json['status'] == 'connectToPlay':

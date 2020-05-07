@@ -7,6 +7,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/lobbyStyle.css') }}">
     <title>The Resistance</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='assets/icon.png') }}" 
     type="image/x-icon">
@@ -17,10 +18,12 @@
   <body style="font-family: cofleyMain">
 
     <h1></h1>
+    
 
-    <ul id="users">
-
-    </ul>
+    <ul id="users"></ul>
+    <ul id="players"></ul>
+    <button id="add-item">Add item</button>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
     <div class="row" style="float: right; margin-right: 5%; margin-top: 10%;">
       <button id="stgame" onclick="clicked()">Start Game</button>
@@ -37,7 +40,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 
+    <script src="{{ url_for('static', filename='js/lobbyScript.js') }}"></script>
+
     <script type="text/javascript">
+
 
       var startGame = document.getElementById('stgame')
       startGame.style.display = "none";
@@ -88,6 +94,7 @@
 
           if(msg.status == 'updatingLobby'){
             $("#users").empty();
+            addPlayers(msg.players)
             for (i = 0; i < msg.players.length; i++){
                 if (msg.players[i] == msg.host){
                     $("#users").append('<li>' + msg.players[i] +'(host)</li>');
@@ -117,6 +124,9 @@
           window.location.href = "/play"
         }
 
+        if(msg.status == 'pleft'){
+          removePlayer(msg.name);
+        }
 
       }
 
@@ -130,6 +140,7 @@
 
 
     </script>
+
 
     
 
