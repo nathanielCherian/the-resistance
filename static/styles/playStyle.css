@@ -3,7 +3,7 @@
 	height: 500px;
 	width: 500px;
 	border-radius: 50%;
-	position: relative;
+    position: relative;
 }
 
 .list-item{
@@ -13,8 +13,23 @@
 	width: 80px;
 	position: absolute;
 	top: 50%;
-	left: 50%;
+    left: 50%;
+    transition-duration: 1s;
 }
+
+li{
+    flex: 1;
+}
+
+li:hover{
+    background-color: rgb(209, 243, 243);
+    top: 48%;
+    left: 48%;
+    height: 100px;
+    width: 100px;
+}
+
+
 
 .remove-item{
     background-color: aqua;

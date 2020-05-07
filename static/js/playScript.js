@@ -12,7 +12,7 @@ plist = getplist();
 console.log(plist)
 
 for(i=0; i<plist.length; i++){
-    var listItem = $("<li class='list-item'>" + plist[i] + "<button class='remove-item'>Remove</button></li>");
+    var listItem = $("<li class='list-item' id='" + plist[i] + "'>" + plist[i] + "<button class='remove-item'>Remove</button></li>");
 	list.append(listItem);
 	var listItems = $(".list-item");
     updateLayout(listItems);
@@ -36,6 +36,12 @@ $(document).on("click", ".remove-item", function(){
 console.log(getroomID())
 console.log(getName())
 
+
+var img = document.createElement('img'); 
+img.src = "/static/assets/star.png";
+img.style.width = '40px'
+img.style.height = '40px'
+document.getElementById('nathan').appendChild(img)
 
 
 var socket = io.connect('http://192.168.1.12:5000/');
