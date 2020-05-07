@@ -1,0 +1,8 @@
+Status = 
+
+    'lobby'
+
+    'leave'
+
+    'connectToPlay'
+    
