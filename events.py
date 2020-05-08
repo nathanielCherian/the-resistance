@@ -1,6 +1,7 @@
 from __main__ import socketio
 from app import players, session, db
-from makeJSON import updateLobby
+from makeJSON import updateLobby, playData1
+from model import Player, Session, Mission, Board, createBoard, loadBoard, saveBoard
 import json as j
 
 
@@ -44,8 +45,20 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
         
         if json['status'] == 'connectToPlay':
             if json['name'] == found_player.get_list()[0]: #check if user is host
-                
                 sendMes = {'roomid' : json['roomid'], 'status':'playCommand'}
+
+                b = createBoard(found_player.get_list()) #loading players into object returning an object
+                found_player.board = saveBoard(b) #serializing object into binary and saving in DB
+                db.session.commit()
+
+                pdata = playData1(b, session['room'])
+
                 socketio.emit('my response', sendMes)
+
+                socketio.emit('my response', pdata)
+
             else: #redirect user
                 print("redirect")
+                b = loadBoard(found_player.board)
+                pdata = playData1(b, session['room'])
+                socketio.emit('my response', pdata)

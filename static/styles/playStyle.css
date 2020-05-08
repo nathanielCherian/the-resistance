@@ -36,3 +36,11 @@ li:hover{
     background-color: aqua;
     display: none;
 }
+
+#role-card{
+    border-radius: 10%;
+}
+
+#role-card:hover{
+    box-shadow: 0 0 4px 1px gray;
+}

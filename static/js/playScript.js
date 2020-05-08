@@ -37,12 +37,15 @@ console.log(getroomID())
 console.log(getName())
 
 
-var img = document.createElement('img'); 
-img.src = "/static/assets/star.png";
-img.style.width = '40px'
-img.style.height = '40px'
-document.getElementById('nathan').appendChild(img)
-
+function updateLeader(teamleader){
+	$('#t-leader').remove()
+	var img = document.createElement('img'); 
+	img.src = "/static/assets/star.png";
+	img.style.width = '40px'
+	img.style.height = '40px'
+	img.id = 't-leader'
+	document.getElementById(teamleader).appendChild(img)
+}
 
 var socket = io.connect('http://192.168.1.12:5000/');
 
@@ -58,6 +61,19 @@ socket.on( 'connect', function() {
 socket.on( 'my response', function( msg ) {
     if (msg.roomid == getroomID()){
         console.log( msg )
+
+		if(msg.status == 'playData1'){
+			updateLeader(msg.team_leader)
+
+			if(msg[getName()] == 'rebel'){
+				console.log('rebel')
+				$('#role-card').attr("src", "/static/assets/blue.png")
+			}else{
+				console.log('spy')
+				$('#role-card').attr("src", "/static/assets/red.png")
+			}
+		}
+
 
     }
 

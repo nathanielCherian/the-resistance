@@ -23,7 +23,6 @@ class players(db.Model):
     isPlaying = db.Column("isPlaying", db.Boolean,unique=False)
     board = db.Column("board", db.LargeBinary)
 
-
     def __init__(self, gameCode, playerList, isPlaying):
         self.gameCode = gameCode
         self.playerList = playerList
@@ -80,9 +79,7 @@ def lobby():
 def play():
     print('name:    ' + session['name'])
     plist = players.query.filter_by(gameCode=session['room']).first().get_list()
-    players.query.filter_by(gameCode=session['room']).first().isPlaying = True
-    db.session.commit()
-
+    
     plst = []
     idx = plist.index(session['name'])
     for i in range(len(plist)): #to rearrange elemnts in list to make unique for players
@@ -93,8 +90,11 @@ def play():
     print(jData)
     return render_template('play.html', roomID=session['room'], name=session['name'], jData=jData)
 
-
-
+import pickle as p
+class testClass():
+    i = 0
+    def __init__(self, i):
+        self.i = i
 
 
 @app.route('/getstarted', methods=['GET', 'POST'])
@@ -115,8 +115,18 @@ def getstarted():
 
         pData = j.dumps({'playerList':[session['name']]})
         player = players(gameCode=session['room'], playerList= pData, isPlaying=False)
+        
+        tes = testClass(5)
+        b = p.dumps(tes)
+        player.board = b
+
         db.session.add(player)
         db.session.commit()
+
+        found_player = players.query.filter_by(gameCode=session['room']).first()
+        s = p.loads(found_player.board)
+        print(s.i)
+
         return redirect(url_for('lobby'))
 
     return render_template("getstarted.html", values=players.query.all())
