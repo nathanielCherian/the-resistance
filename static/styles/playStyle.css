@@ -44,3 +44,18 @@ li:hover{
 #role-card:hover{
     box-shadow: 0 0 4px 1px gray;
 }
+
+.alert-box {
+	padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;  
+}
+
+.success {
+    color: #ffffff;
+    background-color: #db3bab;
+    border-color: #d6e9c6;
+    display: none;
+}
+

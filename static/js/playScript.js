@@ -1,5 +1,7 @@
 var list = $("#list");
 
+
+
 var updateLayout = function(listItems){
 	for(var i = 0; i < listItems.length; i ++){
 		var offsetAngle = 360 / listItems.length;
@@ -45,6 +47,10 @@ function updateLeader(teamleader){
 	img.style.height = '40px'
 	img.id = 't-leader'
 	document.getElementById(teamleader).appendChild(img)
+	if(teamleader == getName()){
+		$( "div.success" ).text("You are the team leader!")
+		$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+	}
 }
 
 var socket = io.connect('http://192.168.1.12:5000/');
@@ -68,9 +74,13 @@ socket.on( 'my response', function( msg ) {
 			if(msg[getName()] == 'rebel'){
 				console.log('rebel')
 				$('#role-card').attr("src", "/static/assets/blue.png")
+				$( "div.success" ).text("You are a rebel")
+				$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
 			}else{
 				console.log('spy')
 				$('#role-card').attr("src", "/static/assets/red.png")
+				$( "div.success" ).text("You are a spy")
+				$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
 			}
 		}
 
@@ -78,3 +88,4 @@ socket.on( 'my response', function( msg ) {
     }
 
   })
+
