@@ -66,3 +66,23 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
         if json['status'] == 'updateGun':
             socketio.emit('my response', json) #pass on to all players
+
+        if json['status'] == 'teamFinished':
+            socketio.emit('my response', {
+                'roomid':session['room'],
+                'status':'voteTeam'
+            })
+
+        if json['status'] == 'pteamvote':
+            b = loadBoard(found_player.board) #convert from pickle to object
+            b.setPlayerVote(json['name'],'team',json['vote'])  #place player vote in
+            found_player.board = saveBoard(b) #serialize back to pickle
+            db.session.commit()
+            socketio.emit('my response', json) #send vote to all players
+
+        if json['status'] == 'doneVoting':
+            b = loadBoard(found_player.board)
+            result = b.countTeamVotes()
+            json.update({'result':result})
+            print(json)
+            socketio.emit('my response', json)

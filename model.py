@@ -101,6 +101,7 @@ class Board:
                 positive += 1
             elif player.teamVote == False:
                 negetive += 1
+            player.teamVote = None # reset for next round
         if positive > negetive:
             print("vote passes!")
             return True
@@ -130,14 +131,14 @@ class Board:
         else:
             return 1
 
-    def setPlayerVote(self,name,type,vote):
+    def setPlayerVote(self,name,typ,vote):
         for p in self.players:
             if p.name == name:
 
-                if type == 'team':
+                if typ == 'team':
                     p.teamVote = vote #boolean
                     break
-                elif type == 'mission':
+                elif typ == 'mission':
                     p.missionVote = vote # 1 or 0
                     break
 

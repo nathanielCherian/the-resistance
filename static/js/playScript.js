@@ -1,5 +1,7 @@
 var list = $("#list");
-
+$('#fin-team').hide();
+$('#yay-vote').hide();
+$('#nay-vote').hide();
 
 
 var updateLayout = function(listItems){
@@ -14,7 +16,7 @@ plist = getplist();
 console.log(plist)
 
 for(i=0; i<plist.length; i++){
-    var listItem = $("<li class='list-item' id='" + plist[i] + "'>" + plist[i] + "<button class='remove-item'>Remove</button></li>");
+    var listItem = $("<li class='list-item' id='" + plist[i] + "'>" + plist[i] + "</li>");
 	list.append(listItem);
 	var listItems = $(".list-item");
     updateLayout(listItems);
@@ -29,11 +31,7 @@ $(document).on("click", "#add-item", function(){
 
 });
 
-$(document).on("click", ".remove-item", function(){
-	$(this).parent().remove();
-	var listItems = $(".list-item");
-	updateLayout(listItems);
-});
+
 
 console.log(getroomID())
 console.log(getName())
@@ -43,6 +41,15 @@ var teamlead = ""
 var ptoPlay = 0
 
 function updateLeader(teamleader){
+
+	$('#fin-team').hide();
+	$('#yay-vote').hide();
+	$('#nay-vote').hide();
+
+	$('.gun').remove();
+	$('.team-vote').remove();
+
+	$('li').css("pointer-events", "auto")
 	$('#t-leader').remove()
 	var img = document.createElement('img'); 
 	img.src = "/static/assets/star.png";
@@ -64,7 +71,8 @@ socket.on( 'connect', function() {
         roomid : getroomID(),
         status : 'connectToPlay',
         name : getName()
-    }) 
+	}) 
+	
 })
 
 
@@ -72,7 +80,7 @@ socket.on( 'my response', function( msg ) {
     if (msg.roomid == getroomID()){
         console.log( msg )
 
-		if(msg.status == 'playData1'){
+		if(msg.status == 'playData1'){ //initializing everything only happns on connect
 			updateLeader(msg.team_leader)
 			ptoPlay = msg.ptoPlay
 
@@ -87,8 +95,8 @@ socket.on( 'my response', function( msg ) {
 			}
 		}
 
+
 		if(msg.status == 'updateGun' && getName() != teamlead){
-			console.log("made it")
 
 			if(msg.action == 'add'){  //toggle ON
 				console.log("add")
@@ -107,13 +115,60 @@ socket.on( 'my response', function( msg ) {
 	
 		}
 
+		if(msg.status == 'voteTeam'){
+			$('#yay-vote').show()
+			$('#nay-vote').show()
+			$( "div.success" ).text("Vote on this team!")
+			$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+		}
 
+		if(msg.status == 'pteamvote'){
+			updateTeamVote(msg.name,msg.vote);
+		}
+
+		if(msg.status == 'doneVoting'){
+			if(msg.result == true){
+				$( "div.success" ).text("Vote passed!")
+				$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+			}else if(msg.result == false){
+				$( "div.success" ).text("Vote failed!")
+				$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+			}else{
+				$( "div.success" ).text("Vote ties!")
+				$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+			}
+		}
 
     }
 
   })
 
-  function updateRoles(roles){
+
+  function updateTeamVote(name,vote){ //displaying yay/nay votes and emiting when complete
+	var img = document.createElement('img'); 
+	img.style.width = '60px'
+	img.style.height = '60px'
+	img.className = "team-vote"
+	
+	  if(vote == true){
+		img.src = "/static/assets/yay.png";
+	  }else if(vote == false){
+		img.src = "/static/assets/nay.png";
+	  }
+	  $('#'+ name).append(img)
+
+	  if(teamlead == getName() && $('.team-vote').length == $('li').length){ //this means everyone has voted
+		socket.emit('my event',{
+			roomid:getroomID(),
+			status:'doneVoting',
+			name:getName()
+		})
+	  }
+  }
+
+
+
+  function updateRoles(roles){ //changes color of all the spies so they can see each other
 	  
 	  for(let key of Object.keys(roles)){
 		  console.log(key)
@@ -127,7 +182,29 @@ socket.on( 'my response', function( msg ) {
   }
 
 
-  $(document).on("click", "li", function(){
+  function yayvote(){  // emit yay
+	$('#yay-vote').hide()
+	$('#nay-vote').hide()
+	socket.emit('my event', {
+		roomid:getroomID(),
+		status:'pteamvote',
+		vote:true,
+		name:getName()
+	})
+  }
+
+  function nayvote(){ //emit nay
+	$('#yay-vote').hide()
+	$('#nay-vote').hide()
+	socket.emit('my event', {
+		roomid:getroomID(),
+		status:'pteamvote',
+		vote:false,
+		name:getName()
+	})
+  }
+
+  $(document).on("click", "li", function(){ //displays guns and chosen players
 
 	if(teamlead == getName()){
 
@@ -157,7 +234,22 @@ socket.on( 'my response', function( msg ) {
 			name:$(this).attr('id'),
 			action:action
 		}
-		socket.emit('my event', toSend)
+		if(action != ""){socket.emit('my event', toSend)}
+
+		if($('.gun').length == ptoPlay){
+			$('#fin-team').show();
+		}else{
+			$('#fin-team').hide();
+		}
 	}
 })
 
+function finTeam(){
+	$('#fin-team').hide()
+	socket.emit('my event', {
+		roomid:getroomID(),
+		status:'teamFinished',
+		name:getName()
+	})
+	$('li').css("pointer-events", "none")
+}

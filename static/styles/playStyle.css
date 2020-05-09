@@ -31,12 +31,6 @@ li:hover{
 }
 
 
-
-.remove-item{
-    background-color: aqua;
-    display: none;
-}
-
 #role-card{
     border-radius: 10%;
 }

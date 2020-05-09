@@ -14,7 +14,7 @@ function addPlayers(plist){
     
     while (($('ul#players li').length-1) < plist.length-1){
 
-        var listItem = $("<li class='list-item' id='" + plist[($('ul#players li').length)] + "'>" + plist[($('ul#players li').length)] + "<button class='remove-item'>Remove</button></li>");
+        var listItem = $("<li class='list-item' id='" + plist[($('ul#players li').length)] + "'>" + plist[($('ul#players li').length)] + "</li>");
         list.append(listItem);
         var listItems = $(".list-item");
         updateLayout(listItems);
@@ -35,12 +35,4 @@ $(document).on("click", "#add-item", function(){
 	updateLayout(listItems);
 });
 
-$(document).on("click", ".remove-item", function(){
-	$(this).parent().remove();
-	var listItems = $(".list-item");
-	updateLayout(listItems);
-});
 
-function t(){
-    console.log("test")
-}
