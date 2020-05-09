@@ -53,12 +53,16 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
                 pdata = playData1(b, session['room'])
 
-                socketio.emit('my response', sendMes)
+                socketio.emit('my response', sendMes) #sending play command
 
-                socketio.emit('my response', pdata)
+                socketio.emit('my response', pdata) #sending players and their roles
 
             else: #redirect user
                 print("redirect")
                 b = loadBoard(found_player.board)
                 pdata = playData1(b, session['room'])
                 socketio.emit('my response', pdata)
+
+
+        if json['status'] == 'updateGun':
+            socketio.emit('my response', json) #pass on to all players

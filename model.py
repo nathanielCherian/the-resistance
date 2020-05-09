@@ -54,12 +54,24 @@ class Mission:
         else:
             return True
 
+
+gameData = {
+    2:[1,2,1,1,1], #test only
+    5:[2,3,2,3,3],
+    6:[2,3,4,3,4],
+    7:[2,3,3,4,4],
+    8:[3,4,4,5,5],
+    9:[3,4,4,5,5],
+    10:[3,4,4,5,5]
+}
+
+
 class Board:
     num_players = 0
     num_spies = 0
     players = []
     curr_mission = 0 #using index-numbers for mission number
-    mission_info = [] #[]false=spys won round, true=resistance won round
+    #mission_info = [] #[]false=spys won round, true=resistance won round
     mission_list = [] # use this or/and mission_info
     team_leader = 0
     
@@ -67,7 +79,7 @@ class Board:
         self.players = players
         self.num_players = len(players)
         self.num_spies = self.setSpies(players)
-        self.team_leader = random.randint(1,len(self.players)-1) #range?
+        self.team_leader = random.randint(0,len(self.players)-1) #range?
         #print(players[self.team_leader].name)
         
     def setSpies(self, players):
@@ -99,12 +111,35 @@ class Board:
             print("vote tie!")
             return None
 
-    def goOnMission(self, playersM, fails_req):
-        self.mission_list.append(Mission(playersM, fails_req, self.players[self.team_leader].name))
+    def goOnMission(self, playersM):
+        pm = []
+        for p in self.players:
+            if p.name in playersM:
+                pm.append(p)
+
+        self.mission_list.append(Mission(pm, self.failsReq(), self.players[self.team_leader].name))
+        self.curr_mission+=1
         return self.mission_list[-1].outcome
        
+    def playersOnMission(self):
+        return gameData[self.num_players][self.curr_mission]
 
+    def failsReq(self):
+        if len(self.players)>=7 and self.curr_mission==4:
+            return 2
+        else:
+            return 1
 
+    def setPlayerVote(self,name,type,vote):
+        for p in self.players:
+            if p.name == name:
+
+                if type == 'team':
+                    p.teamVote = vote #boolean
+                    break
+                elif type == 'mission':
+                    p.missionVote = vote # 1 or 0
+                    break
 
 def createBoard(players):
     s = Session()
