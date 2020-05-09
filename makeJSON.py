@@ -29,3 +29,10 @@ def playData1(b, roomid):
 
     return d
 
+def rotateLeader(b, roomid):
+    d = {
+        'roomid':roomid,
+        'status':'rotateLeader',
+        'team_leader':b.players[b.team_leader].name
+    }
+    return d

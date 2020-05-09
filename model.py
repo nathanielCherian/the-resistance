@@ -56,7 +56,7 @@ class Mission:
 
 
 gameData = {
-    2:[1,2,1,1,1], #test only
+    2:[2,2,1,1,1], #test only
     5:[2,3,2,3,3],
     6:[2,3,4,3,4],
     7:[2,3,3,4,4],
@@ -74,6 +74,8 @@ class Board:
     #mission_info = [] #[]false=spys won round, true=resistance won round
     mission_list = [] # use this or/and mission_info
     team_leader = 0
+    plOnM = [] #player names on mission
+    pmvotes = 0 #number of players that have voted
     
     def __init__(self, players):
         self.players = players
@@ -90,7 +92,10 @@ class Board:
         return len(rands)
         
     def changeLeader(self):
-        self.team_leader -= 1
+        if abs(self.team_leader) != len(self.players):
+            self.team_leader -= 1
+        else:
+            self.team_leader = 1
         return self.team_leader
 
     def countTeamVotes(self):
@@ -113,6 +118,7 @@ class Board:
             return None
 
     def goOnMission(self, playersM):
+        self.pmvotes = 0 #resetting counter back to 0
         pm = []
         for p in self.players:
             if p.name in playersM:
@@ -140,6 +146,7 @@ class Board:
                     break
                 elif typ == 'mission':
                     p.missionVote = vote # 1 or 0
+                    self.pmvotes += 1
                     break
 
 def createBoard(players):

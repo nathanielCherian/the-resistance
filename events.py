@@ -1,6 +1,6 @@
 from __main__ import socketio
 from app import players, session, db
-from makeJSON import updateLobby, playData1
+from makeJSON import updateLobby, playData1, rotateLeader
 from model import Player, Session, Mission, Board, createBoard, loadBoard, saveBoard
 import json as j
 
@@ -68,6 +68,10 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
             socketio.emit('my response', json) #pass on to all players
 
         if json['status'] == 'teamFinished':
+            b = loadBoard(found_player.board)
+            b.plOnM = json['plOnM']
+            found_player.board = saveBoard(b)
+            db.session.commit()
             socketio.emit('my response', {
                 'roomid':session['room'],
                 'status':'voteTeam'
@@ -84,5 +88,27 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
             b = loadBoard(found_player.board)
             result = b.countTeamVotes()
             json.update({'result':result})
-            print(json)
             socketio.emit('my response', json)
+
+            if result == False or result == None:   #if vote fails or ties rotate leader
+                leader = b.changeLeader()
+                b.plOnM = []
+                found_player.board = saveBoard(b)
+                db.session.commit()
+                socketio.emit('my response', rotateLeader(b,session['room'])) #emits command to change leader and reset screens
+
+            elif result == True:
+                socketio.emit('my response', {
+                    'roomid':session['room'],
+                    'status':'collectMVotes',
+                    'players':b.plOnM
+                })
+
+        if json['status'] == 'sendMVote':
+            b = loadBoard(found_player.board)
+            b.setPlayerVote(json['name'],'mission',json['vote'])
+            found_player.board = saveBoard(b)
+            db.session.commit()
+
+            if(b.pmvotes == len(b.plOnM)):
+                print("\n\n START MISSION \n\n")

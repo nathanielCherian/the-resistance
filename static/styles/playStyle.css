@@ -53,3 +53,11 @@ li:hover{
     display: none;
 }
 
+.mission-card{
+    border-radius: 10%;
+}
+
+.mission-card:hover{
+    background-color: gray;
+    opacity: .5;
+}

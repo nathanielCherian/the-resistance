@@ -2,6 +2,7 @@ var list = $("#list");
 $('#fin-team').hide();
 $('#yay-vote').hide();
 $('#nay-vote').hide();
+$('.mission-card').hide();
 
 
 var updateLayout = function(listItems){
@@ -39,6 +40,7 @@ console.log(getName())
 
 var teamlead = ""
 var ptoPlay = 0
+var role = ""
 
 function updateLeader(teamleader){
 
@@ -86,12 +88,12 @@ socket.on( 'my response', function( msg ) {
 
 
 			if(msg[getName()] == 'rebel'){
-				console.log('rebel')
+				role = 'rebel'
 				$('#role-card').attr("src", "/static/assets/blue.png")
 			}else{
-				console.log('spy')
+				role = 'spy'
 				$('#role-card').attr("src", "/static/assets/red.png")
-				updateRoles(msg.roles)
+				updateRoles(msg.roles) //change all spies to red
 			}
 		}
 
@@ -126,7 +128,7 @@ socket.on( 'my response', function( msg ) {
 			updateTeamVote(msg.name,msg.vote);
 		}
 
-		if(msg.status == 'doneVoting'){
+		if(msg.status == 'doneVoting'){ //displayes voting outcome to players
 			if(msg.result == true){
 				$( "div.success" ).text("Vote passed!")
 				$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
@@ -139,10 +141,48 @@ socket.on( 'my response', function( msg ) {
 			}
 		}
 
+		if(msg.status == 'rotateLeader'){ //changes who is leader
+			updateLeader(msg.team_leader)
+		}
+
+		if(msg.status == 'collectMVotes'){ //makes mission buttons visable
+			if(msg.players.includes(getName()) == true){
+				if(role == 'spy'){
+					$("#fail").fadeIn( 300 )
+					$("#pass").fadeIn( 300 )
+				}else if(role == 'rebel'){
+					$('#fail').css("background-color","gray")
+					$('#fail').css("opacity",".2")
+					$('#fail').css("pointer-events", "none")
+					$("#fail").fadeIn( 300 )
+					$("#pass").fadeIn( 300 )
+				}
+			}
+		}
+
     }
 
   })
 
+  $(document).on("click",".mission-card", function(){ //returns click to server and fades out
+
+	var vote = 0
+
+	if($(this).attr('id') == 'pass'){
+		vote = 0
+	}else{
+		vote = 1
+	}
+
+	socket.emit('my event', {
+		roomid:getroomID(),
+		status:'sendMVote',
+		name:getName(),
+		vote:vote
+	})
+	
+	$('.mission-card').fadeOut( 400 );
+  })
 
   function updateTeamVote(name,vote){ //displaying yay/nay votes and emiting when complete
 	var img = document.createElement('img'); 
@@ -246,10 +286,19 @@ socket.on( 'my response', function( msg ) {
 
 function finTeam(){
 	$('#fin-team').hide()
-	socket.emit('my event', {
+	$('li').css("pointer-events", "none")
+
+	var ponM = []
+	$('.gun').each(function() {
+		ponM.push($(this).parent().attr('id'))
+	  });
+
+	  socket.emit('my event', {
 		roomid:getroomID(),
 		status:'teamFinished',
-		name:getName()
+		name:getName(),
+		plOnM:ponM
 	})
-	$('li').css("pointer-events", "none")
+
+
 }
