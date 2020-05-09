@@ -1,6 +1,6 @@
 from __main__ import socketio
 from app import players, session, db
-from makeJSON import updateLobby, playData1, rotateLeader
+from makeJSON import updateLobby, playData1, rotateLeader, missionOutcome
 from model import Player, Session, Mission, Board, createBoard, loadBoard, saveBoard
 import json as j
 
@@ -110,5 +110,9 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
             found_player.board = saveBoard(b)
             db.session.commit()
 
-            if(b.pmvotes == len(b.plOnM)):
-                print("\n\n START MISSION \n\n")
+            if(b.pmvotes == len(b.plOnM)): #if all players have voted
+                result = b.goOnMission()
+                leader = b.changeLeader()
+                found_player.board = saveBoard(b)
+                db.session.commit()
+                socketio.emit('my response', missionOutcome(b,session['room']))

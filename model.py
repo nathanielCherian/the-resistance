@@ -71,7 +71,7 @@ class Board:
     num_spies = 0
     players = []
     curr_mission = 0 #using index-numbers for mission number
-    #mission_info = [] #[]false=spys won round, true=resistance won round
+    mission_info = [] #[]false=spys won round, true=resistance won round
     mission_list = [] # use this or/and mission_info
     team_leader = 0
     plOnM = [] #player names on mission
@@ -117,15 +117,16 @@ class Board:
             print("vote tie!")
             return None
 
-    def goOnMission(self, playersM):
+    def goOnMission(self):
         self.pmvotes = 0 #resetting counter back to 0
         pm = []
         for p in self.players:
-            if p.name in playersM:
+            if p.name in self.plOnM:
                 pm.append(p)
 
         self.mission_list.append(Mission(pm, self.failsReq(), self.players[self.team_leader].name))
         self.curr_mission+=1
+        self.mission_info.append(self.mission_list[-1].outcome)
         return self.mission_list[-1].outcome
        
     def playersOnMission(self):

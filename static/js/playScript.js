@@ -160,6 +160,38 @@ socket.on( 'my response', function( msg ) {
 			}
 		}
 
+		if(msg.status == 'missionOutcome'){
+			if(msg.outcome == true){
+				$( "div.success" ).text("Resistance wins the round!")
+				$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+			}else{
+				$( "div.success" ).text("Spies wins the round!")
+				$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+			}
+			updateLeader(msg.team_leader)
+			ptoPlay = msg.ptoPlay
+
+		}
+
+		if(msg.status == 'gameOver'){
+			$('#fin-team').hide();
+			$('#yay-vote').hide();
+			$('#nay-vote').hide();
+			$('.gun').remove();
+			$('.team-vote').remove();
+			$('li').css("pointer-events", "auto")
+			$('#t-leader').remove()  //clear the screen + stop any further play
+			teamlead = ""
+			updateRoles(msg.roles) //show everyone who the spies are
+			if(msg.winner == 'rebel'){
+				$( "div.success" ).text("Resistance wins the game!")
+				$( "div.success" ).fadeIn( 300 );
+			}else{
+				$( "div.success" ).text("Spies wins the game!")
+				$( "div.success" ).fadeIn( 300 );
+			}
+		}
+
     }
 
   })
@@ -180,7 +212,7 @@ socket.on( 'my response', function( msg ) {
 		name:getName(),
 		vote:vote
 	})
-	
+
 	$('.mission-card').fadeOut( 400 );
   })
 
