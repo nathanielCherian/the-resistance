@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/playStyle.css') }}">
 
+    <title>Resistance</title>
+
     <body>
 
 
@@ -27,6 +29,12 @@
             <img src="{{ url_for('static', filename='assets/fail.png') }}" class="mission-card" id="fail">
             <img src="{{ url_for('static', filename='assets/pass.png') }}" class="mission-card" id="pass" style="margin-top: 10px;">
             </div>
+
+            <div id="vote-counter">
+                <p style="font-size: 90px; margin-bottom: 0px; margin-top: 0px;" id="vleft"><b>3</b><br></p>
+                <p style="font-size: 30px;">votes left!</p>
+            </div>
+
         </div>
 
 

@@ -3,6 +3,7 @@ $('#fin-team').hide();
 $('#yay-vote').hide();
 $('#nay-vote').hide();
 $('.mission-card').hide();
+$('#vote-counter').hide();
 
 
 var updateLayout = function(listItems){
@@ -47,6 +48,7 @@ function updateLeader(teamleader){
 	$('#fin-team').hide();
 	$('#yay-vote').hide();
 	$('#nay-vote').hide();
+	$('#vote-counter').hide();
 
 	$('.gun').remove();
 	$('.team-vote').remove();
@@ -62,8 +64,13 @@ function updateLeader(teamleader){
 	if(teamleader == getName()){
 		$( "div.success" ).text("You are the team leader, Choose a team!")
 		$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+
+		$('#vleft').text(ptoPlay - $('.gun').length)
+		$('#vote-counter').fadeIn(100);
 	}
 	teamlead = teamleader
+
+
 }
 
 var socket = io.connect('http://192.168.1.12:5000/');
@@ -83,8 +90,8 @@ socket.on( 'my response', function( msg ) {
         console.log( msg )
 
 		if(msg.status == 'playData1'){ //initializing everything only happns on connect
-			updateLeader(msg.team_leader)
 			ptoPlay = msg.ptoPlay
+			updateLeader(msg.team_leader)
 
 
 			if(msg[getName()] == 'rebel'){
@@ -168,8 +175,8 @@ socket.on( 'my response', function( msg ) {
 				$( "div.success" ).text("Spies wins the round!")
 				$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
 			}
-			updateLeader(msg.team_leader)
 			ptoPlay = msg.ptoPlay
+			updateLeader(msg.team_leader)
 
 		}
 
@@ -177,6 +184,7 @@ socket.on( 'my response', function( msg ) {
 			$('#fin-team').hide();
 			$('#yay-vote').hide();
 			$('#nay-vote').hide();
+			$('#vote-counter').hide();
 			$('.gun').remove();
 			$('.team-vote').remove();
 			$('li').css("pointer-events", "auto")
@@ -312,6 +320,15 @@ socket.on( 'my response', function( msg ) {
 			$('#fin-team').show();
 		}else{
 			$('#fin-team').hide();
+		}
+
+		
+		if($('.gun').length < ptoPlay){ //set up the counter
+			console.log($('.gun').length)
+			$('#vleft').text(ptoPlay - $('.gun').length)
+			$('#vote-counter').fadeIn(100);
+		}else{
+			$('#vote-counter').fadeOut(100);
 		}
 	}
 })

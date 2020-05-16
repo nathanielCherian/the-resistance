@@ -53,9 +53,10 @@ def missionOutcome(b, roomid):   #will return mission outcome as well as instruc
             rebel+=1
 
 
+    l = {} # fatal error keep l outside
     if spy == 3:   #if one team has hit 3 wins end game
         d.update({'status':"gameOver", 'winner':'spy'})
-        l = {}
+        
         for player in b.players:
             pData = {player.name:player.role}
             d.update(pData)
