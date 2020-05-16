@@ -4,6 +4,7 @@ $('#yay-vote').hide();
 $('#nay-vote').hide();
 $('.mission-card').hide();
 $('#vote-counter').hide();
+$('.overlay-desc').hide();
 
 
 var updateLayout = function(listItems){
@@ -125,10 +126,11 @@ socket.on( 'my response', function( msg ) {
 		}
 
 		if(msg.status == 'voteTeam'){
-			$('#yay-vote').show()
-			$('#nay-vote').show()
-			$( "div.success" ).text("Vote on this team!")
-			$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+			$('#teamvotes').fadeIn(1000);
+			//$('#yay-vote').show()
+			//$('#nay-vote').show()
+			//$( "div.success" ).text("Vote on this team!")
+			//$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
 		}
 
 		if(msg.status == 'pteamvote'){
@@ -154,15 +156,18 @@ socket.on( 'my response', function( msg ) {
 
 		if(msg.status == 'collectMVotes'){ //makes mission buttons visable
 			if(msg.players.includes(getName()) == true){
+				$('.mission-card').show();
 				if(role == 'spy'){
-					$("#fail").fadeIn( 300 )
-					$("#pass").fadeIn( 300 )
+					$('#missionvotes').fadeIn(1000)
+					//$("#fail").fadeIn( 300 )
+					//$("#pass").fadeIn( 300 )
 				}else if(role == 'rebel'){
 					$('#fail').css("background-color","gray")
 					$('#fail').css("opacity",".2")
 					$('#fail').css("pointer-events", "none")
-					$("#fail").fadeIn( 300 )
-					$("#pass").fadeIn( 300 )
+					//$("#fail").fadeIn( 300 )
+					//$("#pass").fadeIn( 300 )
+					$('#missionvotes').fadeIn(1000)
 				}
 			}
 		}
@@ -221,8 +226,8 @@ socket.on( 'my response', function( msg ) {
 		vote:vote
 	})
 
-	$('.mission-card').fadeOut( 400 );
-  })
+	$('#missionvotes').fadeOut(1000)
+})
 
   function updateTeamVote(name,vote){ //displaying yay/nay votes and emiting when complete
 	var img = document.createElement('img'); 
@@ -263,8 +268,7 @@ socket.on( 'my response', function( msg ) {
 
 
   function yayvote(){  // emit yay
-	$('#yay-vote').hide()
-	$('#nay-vote').hide()
+	$('#teamvotes').fadeOut(1000)
 	socket.emit('my event', {
 		roomid:getroomID(),
 		status:'pteamvote',
@@ -274,8 +278,7 @@ socket.on( 'my response', function( msg ) {
   }
 
   function nayvote(){ //emit nay
-	$('#yay-vote').hide()
-	$('#nay-vote').hide()
+	$('#teamvotes').fadeOut(1000)
 	socket.emit('my event', {
 		roomid:getroomID(),
 		status:'pteamvote',

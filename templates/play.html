@@ -25,10 +25,12 @@
         <div class="col-sm-2" style="height: fit-content;">
             <img src="{{ url_for('static', filename='assets/blue.png') }}" alt="resistance" id="role-card" style="width: 200px;height: 280px; margin-top: 7%">
 
+            <!-- 
             <div style="margin-top: 40%;">
             <img src="{{ url_for('static', filename='assets/fail.png') }}" class="mission-card" id="fail">
             <img src="{{ url_for('static', filename='assets/pass.png') }}" class="mission-card" id="pass" style="margin-top: 10px;">
             </div>
+            -->
 
             <div id="vote-counter">
                 <p style="font-size: 90px; margin-bottom: 0px; margin-top: 0px;" id="vleft"><b>3</b><br></p>
@@ -55,6 +57,20 @@
             </div>
             
         </div>
+
+        <div class="overlay-desc" style="background-color: gray; opacity: .8;" id="teamvotes">
+
+                <button style="margin: 20px;" id="yay-vote" onclick="yayvote()">Yay!</button>
+                <button style="margin: 20px;" id="nay-vote" onclick="nayvote()">Nay!</button>
+         </div>
+
+
+         <div class="overlay-desc" style="background-color: gray; opacity: .8;" id="missionvotes">
+            
+                <img src="{{ url_for('static', filename='assets/fail.png') }}" class="mission-card" id="fail">
+                <img src="{{ url_for('static', filename='assets/pass.png') }}" class="mission-card" id="pass">
+        </div>
+
         
       </body>
       
