@@ -85,7 +85,7 @@ socket.on( 'connect', function() {
 	
 })
 
-
+var messaage  = {}
 socket.on( 'my response', function( msg ) {
     if (msg.roomid == getroomID()){
         console.log( msg )
@@ -103,6 +103,17 @@ socket.on( 'my response', function( msg ) {
 				$('#role-card').attr("src", "/static/assets/red.png")
 				updateRoles(msg.roles) //change all spies to red
 			}
+
+			for(i = 0; i < msg.gameData.length; i++){ //setting up the mission bubbles
+				//console.log($($('#mss').find('li')[i]).text())
+				$($('#mss').find('li')[i]).text(msg.gameData[i]);
+			}
+
+			//msg.twoFails = true
+			if(msg.twoFails == true){
+				$($('#mss').find('li')[3]).append('<p style="font-size: 15px;">*2 fails</p>');
+			}
+
 		}
 
 
@@ -189,16 +200,7 @@ socket.on( 'my response', function( msg ) {
 
 			$("#revealmvotes").fadeIn(1000)
 
-			if(msg.outcome == true){
-				$( "div.success" ).text("Resistance wins the round!")
-				$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
-			}else{
-				$( "div.success" ).text("Spies wins the round!")
-				$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
-			}
-			ptoPlay = msg.ptoPlay
-			updateLeader(msg.team_leader)
-
+			messaage = msg
 		}
 
 		if(msg.status == 'gameOver'){
@@ -258,7 +260,8 @@ socket.on( 'my response', function( msg ) {
 	  }
 	  $('#'+ name).append(img)
 
-	  if(teamlead == getName() && $('.team-vote').length == $('li').length){ //this means everyone has voted
+	  console.log($('#list li').length)
+	  if(teamlead == getName() && $('.team-vote').length == $('#list li').length){ //this means everyone has voted
 		socket.emit('my event',{
 			roomid:getroomID(),
 			status:'doneVoting',
@@ -303,7 +306,7 @@ socket.on( 'my response', function( msg ) {
 	})
   }
 
-  $(document).on("click", "li", function(){ //displays guns and chosen players
+  $(document).on("click", "#list li", function(){ //displays guns and chosen players
 
 	if(teamlead == getName()){
 
@@ -336,25 +339,29 @@ socket.on( 'my response', function( msg ) {
 		if(action != ""){socket.emit('my event', toSend)}
 
 		if($('.gun').length == ptoPlay){
-			$('#fin-team').show();
+			$('#vote-counter').fadeOut(200);
+			$('#fin-team').delay(500).fadeIn(200);
 		}else{
-			$('#fin-team').hide();
+			$('#fin-team').fadeOut(200);
+			$('#vleft').text(ptoPlay - $('.gun').length)
+			$('#vote-counter').delay(500).fadeIn(200);
 		}
 
 		
+		/*
 		if($('.gun').length < ptoPlay){ //set up the counter
 			console.log($('.gun').length)
 			$('#vleft').text(ptoPlay - $('.gun').length)
 			$('#vote-counter').fadeIn(100);
 		}else{
 			$('#vote-counter').fadeOut(100);
-		}
+		}*/
 	}
 })
 
 function finTeam(){
-	$('#fin-team').hide()
-	$('li').css("pointer-events", "none")
+	$('#fin-team').fadeOut(200)
+	$('#list li').css("pointer-events", "none")
 
 	var ponM = []
 	$('.gun').each(function() {
@@ -373,5 +380,20 @@ function finTeam(){
 
 
 function closeRMV(){
+	msg = messaage
+
 	$("#revealmvotes").fadeOut(1000)
+
+	if(msg.outcome == true){
+		$( "div.success" ).text("Resistance wins the round!")
+		$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+		$($('#mss').find('li')[msg.lastMission]).css("background-color", "green");
+
+	}else{
+		$( "div.success" ).text("Spies wins the round!")
+		$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+		$($('#mss').find('li')[msg.lastMission]).css("background-color", "red");
+	}
+	ptoPlay = msg.ptoPlay
+	updateLeader(msg.team_leader)
 }

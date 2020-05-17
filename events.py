@@ -35,6 +35,7 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
         if json['status'] == 'leave':
 
             found_player.removePlayer(session['name'])
+            db.session.commit()
 
             d = {'status':'pleft', "roomid":session['room'], 'name':session['name']}
 

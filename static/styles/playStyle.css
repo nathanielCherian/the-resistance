@@ -83,3 +83,72 @@
     align-items: center;
     justify-content: center;
     }
+
+    #missions li{
+        display: block;
+        width: 150px;
+        height: 150px;
+        border: 1px solid #000;
+        margin: 5px;
+        border-radius: 50%;
+        font-size: 60px;
+        text-align: center;
+        padding: 10%;
+        /*background-color: rebeccapurple;*/
+        
+    }
+
+    #missions li:hover{
+        box-shadow: 0 0 4px 1px gray;
+    }
+
+    .buttons{
+        background-color:#932ada;
+        border-radius:28px;
+        border:1px solid #6f7470;
+        display:inline-block;
+        cursor:pointer;
+        color:#ffffff;
+        font-family:Arial;
+        font-size:17px;
+        padding:16px 31px;
+        text-decoration:none;
+        text-shadow:0px 1px 0px #dab3f3;
+    }
+
+    .buttons:hover{
+        background-color:#dab3f3;
+    }
+
+    .buttons:active {
+        position:relative;
+        top:1px;
+    }
+
+    .votebutton{
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+    }
+    #yay-vote{
+        background-color: rgb(65, 209, 65);
+    }
+    #nay-vote{
+        background-color: rgb(255, 61, 61);
+    }
+
+
+    .votebutton:hover{
+        opacity: .5;
+    }
+
+    .votebutton:active{
+        position: relative;
+        top: 1px;
+    }
+
+    li{
+        transition-duration: 1s;
+    }
+    
+        

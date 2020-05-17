@@ -1,5 +1,5 @@
 import json
-from model import Player, Session, Mission, Board, createBoard, loadBoard, saveBoard
+from model import Player, Session, Mission, Board, createBoard, loadBoard, saveBoard, gameData
 
 
 def updateLobby(pList, roomid):
@@ -26,6 +26,12 @@ def playData1(b, roomid):
     d.update({'team_leader':b.players[b.team_leader].name})
     d.update({'ptoPlay':b.playersOnMission()})
     d.update({'failsreq':b.failsReq()})
+    d.update({'gameData':gameData[len(b.players)]})
+
+    if len(b.players)>=7:
+        d.update({'twoFails':True})
+    else:
+        d.update({'twoFails':False})
 
     return d
 
@@ -83,6 +89,8 @@ def missionOutcome(b, roomid):   #will return mission outcome as well as instruc
             'failsreq':b.failsReq()
         })
 
+
+
     cards = []
     for p in b.players:
         if p.name in b.plOnM:
@@ -91,6 +99,7 @@ def missionOutcome(b, roomid):   #will return mission outcome as well as instruc
 
 
     d.update({'results':cards})
+    d.update({'lastMission':b.curr_mission-1})
 
 
     return d

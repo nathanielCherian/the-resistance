@@ -32,12 +32,19 @@
             </div>
             -->
 
+            <button style="margin-top: 20%;" id="fin-team" onclick="finTeam()" class="buttons">Finalize Team</button>
+            
             <div id="vote-counter">
                 <p style="font-size: 90px; margin-bottom: 0px; margin-top: 0px;" id="vleft"><b>3</b><br></p>
                 <p style="font-size: 30px;">votes left!</p>
             </div>
 
+            
+
+
         </div>
+
+
 
 
         <div class="col-sm-8 text-center" style="padding-top: 5%;">
@@ -45,12 +52,24 @@
             <ul id="list" style="margin: auto;"></ul>
             <button id="add-item">Add item</button>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
         </div>
 
-        <div class="col-sm-2" style="height: fit-content;">
-            <button style="margin-top: 100%;" id="fin-team" onclick="finTeam()">Finalize Team</button>
+
+        <div class="col-sm-2 text-center" style="height: fit-content;">
             <button style="margin-top: 100%;" id="yay-vote" onclick="yayvote()">Yay!</button>
             <button style="margin-top: 100%;" id="nay-vote" onclick="nayvote()">Nay!</button>
+
+            <div id="missions" style="margin-top: 30%;">
+                <ul style="height: 50%;" id="mss">
+                    <li>1</li>
+                    <li>1</li>
+                    <li>2</li>
+                    <li>1</li>
+                    <li>1</li>
+                </ul>
+            </div>
 
         </div>
 
@@ -58,10 +77,12 @@
             
         </div>
 
+
+
         <div class="overlay-desc" style="background-color: gray; opacity: .8;" id="teamvotes">
 
-                <button style="margin: 20px;" id="yay-vote" onclick="yayvote()">Yay!</button>
-                <button style="margin: 20px;" id="nay-vote" onclick="nayvote()">Nay!</button>
+                <button style="margin: 20px;" id="yay-vote" class = 'votebutton' onclick="yayvote()">Yay!</button>
+                <button style="margin: 20px;" id="nay-vote" class = 'votebutton' onclick="nayvote()">Nay!</button>
          </div>
 
 
