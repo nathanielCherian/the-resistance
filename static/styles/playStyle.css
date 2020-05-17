@@ -18,11 +18,11 @@
     transition-duration: 1s;
 }
 
-li{
+.list-item{
     flex: 1;
 }
 
-li:hover{
+.list-item:hover{
     background-color: rgb(209, 243, 243);
     top: 48%;
     left: 48%;

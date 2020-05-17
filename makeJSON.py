@@ -53,6 +53,9 @@ def missionOutcome(b, roomid):   #will return mission outcome as well as instruc
             rebel+=1
 
 
+
+
+
     l = {} # fatal error keep l outside
     if spy == 3:   #if one team has hit 3 wins end game
         d.update({'status':"gameOver", 'winner':'spy'})
@@ -79,6 +82,15 @@ def missionOutcome(b, roomid):   #will return mission outcome as well as instruc
             'ptoPlay':b.playersOnMission(),
             'failsreq':b.failsReq()
         })
+
+    cards = []
+    for p in b.players:
+        if p.name in b.plOnM:
+            cards.append(p.missionVote)
+    b.plOnM = []
+
+
+    d.update({'results':cards})
 
 
     return d

@@ -173,6 +173,22 @@ socket.on( 'my response', function( msg ) {
 		}
 
 		if(msg.status == 'missionOutcome'){
+		
+			$('.pcards').remove();
+
+			x = ""
+			for(i = 0; i < msg.results.length; i++){
+				if(msg.results[i] == 0){
+					x = 'pass'
+				}else{
+					x = 'fail'
+				}
+				console.log(x)
+				$("#revealmvotes").append("<img src='/static/assets/" + x + ".png' style='margin: 10px;' class='pcards'></img>")
+			}
+
+			$("#revealmvotes").fadeIn(1000)
+
 			if(msg.outcome == true){
 				$( "div.success" ).text("Resistance wins the round!")
 				$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
@@ -353,4 +369,9 @@ function finTeam(){
 	})
 
 
+}
+
+
+function closeRMV(){
+	$("#revealmvotes").fadeOut(1000)
 }
