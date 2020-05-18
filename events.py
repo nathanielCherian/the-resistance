@@ -125,6 +125,7 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
                 db.session.commit()
                 message = missionOutcome(b,session['room'])
                 socketio.emit('my response', message)
-                if message['status'] == 'gameOver':
+
+                if message['status'] == 'gameOver': #If game is over destroy session so player cant join back
                     session.pop('name', None)
                     session.pop('room', None)
