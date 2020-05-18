@@ -62,6 +62,7 @@
 
         function clicked(){
           window.onbeforeunload = null;
+          socket.emit('my event', {roomid:roomID,status:'letMeIn'})
           window.location.href = "/play"
         }
 

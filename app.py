@@ -53,17 +53,21 @@ class players(db.Model):
 def home():
 
     if request.method == "POST":
-        usedRooms = []
-        for player in players.query.all():
-            if player.isPlaying == False:
-                usedRooms.append(player.gameCode)
 
-        if request.form['code'].strip(' ') in usedRooms:
-            session['room'] = request.form['code'].strip(' ')
-            session['name'] = request.form['uname']
-            return redirect(url_for('lobby'))
+        session['room'] = request.form['code'].strip(' ')
+        session['name'] = request.form['uname'].strip(' ')
+        found_room = players.query.filter_by(gameCode=session['room']).first()
+
+        if(found_room) and found_room.isPlaying == False: #found waiting room succesfully
+            if session['name'] not in found_room.get_list(): #unique player check
+                return redirect(url_for('lobby'))
+            else:
+                session.pop('name', None)
+                session.pop('room', None)
+                return redirect(url_for('home'))
         else:
-            flash("incorrect code")
+            session.pop('name', None)
+            session.pop('room', None)
             return redirect(url_for('home'))
 
     return render_template('home.html')
@@ -71,29 +75,51 @@ def home():
 
 @app.route('/lobby')
 def lobby():
-    print('name:    ' + session['name'])
-    room = session['room']
-    return  render_template('lobby.html', roomID=room, name=session['name'])
+
+    if session.get('room') and players.query.filter_by(gameCode=session['room']).first():   #authenticate user trying to acess /lobby
+
+        found_room = players.query.filter_by(gameCode=session['room']).first()
+        if found_room.isPlaying == True: #in the case a user in a game presses the back button
+            return redirect(url_for('play'))
+
+
+        print('name:    ' + session['name'])
+        room = session['room']
+        return  render_template('lobby.html', roomID=room, name=session['name'])
+
+
+    else:
+        return redirect(url_for('home'))
+
 
 
 @app.route('/play')
 def play():
-    print('name:    ' + session['name'])
-    plist = players.query.filter_by(gameCode=session['room']).first().get_list()
-    players.query.filter_by(gameCode=session['room']).first().isPlaying = True
-    db.session.commit()
 
-    plst = []
-    idx = plist.index(session['name'])
-    for i in range(len(plist)): #to rearrange elemnts in list to make unique for players
-        plst.append(plist[idx])
-        idx -= 1
-    
-    jData = {'players':plst} #serialize data
-    print(jData)
-    return render_template('play.html', roomID=session['room'], name=session['name'], jData=jData)
+    if session.get('room') and players.query.filter_by(gameCode=session['room']).first():   #authenticate user trying to acess /lobby
+        found_room = players.query.filter_by(gameCode=session['room']).first()
+        if found_room.isPlaying == False:    #in the case a user is not in a game
+            return redirect(url_for('lobby'))
 
 
+        print('name:    ' + session['name'])
+        plist = players.query.filter_by(gameCode=session['room']).first().get_list()
+        players.query.filter_by(gameCode=session['room']).first().isPlaying = True
+        db.session.commit()
+
+        plst = []
+        idx = plist.index(session['name'])
+        for i in range(len(plist)): #to rearrange elemnts in list to make unique for players
+            plst.append(plist[idx])
+            idx -= 1
+            
+        jData = {'players':plst} #serialize data
+        print(jData)
+        return render_template('play.html', roomID=session['room'], name=session['name'], jData=jData)
+
+
+    else:
+        return redirect(url_for('home'))
 
 
 

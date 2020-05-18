@@ -37,11 +37,18 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
             found_player.removePlayer(session['name'])
             db.session.commit()
 
+            session.pop('name', None)
+            session.pop('room', None)
+
             d = {'status':'pleft', "roomid":session['room'], 'name':session['name']}
 
             json = updateLobby(found_player.get_list(), session['room'])
             socketio.emit('my response', json)
             socketio.emit('my response', d)
+
+        if json['status'] == 'letMeIn':
+            found_player.isPlaying = True
+            db.session.commit() #oh the shame
 
         
         if json['status'] == 'connectToPlay':
@@ -116,4 +123,8 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
                 leader = b.changeLeader()
                 found_player.board = saveBoard(b)
                 db.session.commit()
-                socketio.emit('my response', missionOutcome(b,session['room']))
+                message = missionOutcome(b,session['room'])
+                socketio.emit('my response', message)
+                if message['status'] == 'gameOver':
+                    session.pop('name', None)
+                    session.pop('room', None)
