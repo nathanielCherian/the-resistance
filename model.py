@@ -76,6 +76,10 @@ class Board:
     team_leader = 0
     plOnM = [] #player names on mission
     pmvotes = 0 #number of players that have voted
+
+    ismissionvote = False #used to determine wether a player still needs to vote
+    isplayvote = False
+    players_voted = []
     
     def __init__(self, players):
         self.players = players

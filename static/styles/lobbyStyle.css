@@ -1,7 +1,8 @@
 #list{
 	background: none;
-	height: 500px;
-	width: 500px;
+	height: 0;
+    width: 30%;
+    padding-bottom: 30%;
 	border-radius: 50%;
     position: relative;
 }
@@ -10,7 +11,9 @@
 	list-style: none;
 	background-color: aqua;
 	height: 100px;
-	width: 100px;
+    width: 100px;
+    max-width: 200px;
+    /*padding-bottom: 5%;*/
 	position: absolute;
 	top: 50%;
     left: 50%;
@@ -25,7 +28,7 @@ li{
 li:hover{
     background-color: rgb(209, 243, 243);
     top: 48%;
-    left: 48%;
-    height: 120px;
-    width: 120px;
+	height: 100px;
+    width: 100px;
+    max-width: 200px;
 }

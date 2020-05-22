@@ -15,6 +15,7 @@
 	top: 50%;
     left: 50%;
     border-radius: 50%;
+    box-shadow: black;
     transition-duration: 1s;
 }
 
@@ -86,14 +87,14 @@
 
     #missions li{
         display: block;
-        width: 150px;
-        height: 150px;
+        width: 8vw;
+        height: 8vw;
         border: 1px solid #000;
-        margin: 5px;
+        margin: 10%;
         border-radius: 50%;
-        font-size: 60px;
+        font-size: 3vw;
         text-align: center;
-        padding: 10%;
+        /*padding: 10%;
         /*background-color: rebeccapurple;*/
         
     }
@@ -151,4 +152,8 @@
         transition-duration: 1s;
     }
     
-        
+html, body{
+    height:100%;
+    background-image: linear-gradient(rgba(204, 204, 204, 0.63), rgba(148, 148, 148, 0.63));
+
+}

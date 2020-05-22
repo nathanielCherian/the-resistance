@@ -26,7 +26,7 @@ def playData1(b, roomid):
     d.update({'team_leader':b.players[b.team_leader].name})
     d.update({'ptoPlay':b.playersOnMission()})
     d.update({'failsreq':b.failsReq()})
-    d.update({'gameData':gameData[len(b.players)]})
+    d.update({'gameData':gameData[len(b.players)]}) #game data is the dict holding info about game
 
     if len(b.players)>=7:
         d.update({'twoFails':True})
@@ -100,6 +100,49 @@ def missionOutcome(b, roomid):   #will return mission outcome as well as instruc
 
     d.update({'results':cards})
     d.update({'lastMission':b.curr_mission-1})
+
+
+    return d
+
+
+def reloaded(b, roomid, name):
+    d = {
+        'roomid':roomid,
+        'status':'catchUp',
+        'team_leader':b.players[b.team_leader].name,
+        'ptoPlay':b.playersOnMission(),
+        'failsreq':b.failsReq(),
+        'pastMissions':b.mission_info,
+        'resumeVote':None,
+        'pto':name
+    }
+
+    d.update({'gameData':gameData[len(b.players)]})
+
+    if len(b.players)>=7:
+        d.update({'twoFails':True})
+    else:
+        d.update({'twoFails':False})
+
+    l = {}
+    for player in b.players:
+        pData = {player.name:player.role}
+        d.update(pData)
+        l.update(pData)
+
+    d.update({'roles':l})
+
+
+    if(b.ismissionvote == True):
+        if name not in b.players_voted:
+            d['resumeVote']='missionvote'
+
+    if(b.isplayvote == True):
+        if name not in b.players_voted:
+            if name in b.plOnM:
+                d['resumeVote']='playvote'
+
+    
 
 
     return d

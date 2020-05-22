@@ -56,6 +56,12 @@ function updateLeader(teamleader){
 
 	$('li').css("pointer-events", "auto")
 	$('#t-leader').remove()
+
+	$('#teamvotes button').css("pointer-events", "auto")
+	$('#missionvotes button').css("pointer-events", "auto")
+
+
+	
 	var img = document.createElement('img'); 
 	img.src = "/static/assets/star.png";
 	img.style.width = '40px'
@@ -77,11 +83,19 @@ function updateLeader(teamleader){
 var socket = io.connect('http://192.168.1.12:5000/');
 
 socket.on( 'connect', function() {
-    socket.emit( 'my event', {
-        roomid : getroomID(),
-        status : 'connectToPlay',
-        name : getName()
-	}) 
+	if(performance.navigation.type != 1){
+		socket.emit( 'my event', {
+			roomid : getroomID(),
+			status : 'connectToPlay',
+			name : getName()
+		}) 
+	} else{
+		socket.emit('my event', {
+			roomid : getroomID(),
+			status : 'reloaded',
+			name : getName()
+		})
+	}
 	
 })
 
@@ -116,6 +130,91 @@ socket.on( 'my response', function( msg ) {
 
 		}
 
+		if(msg.status == 'catchUp'){
+			ptoPlay = msg.ptoPlay
+			updateLeader(msg.team_leader)
+
+			if(msg[getName()] == 'rebel'){ //handles players roles on reconnect
+				role = 'rebel'
+				$('#role-card').attr("src", "/static/assets/blue.png")
+			}else{
+				role = 'spy'
+				$('#role-card').attr("src", "/static/assets/red.png")
+				updateRoles(msg.roles) //change all spies to red
+			}
+
+			for(i = 0; i < msg.gameData.length; i++){ //setting up the mission bubbles
+				$($('#mss').find('li')[i]).text(msg.gameData[i]);
+			}
+			if(msg.twoFails == true){
+				$($('#mss').find('li')[3]).append('<p style="font-size: 15px;">*2 fails</p>');
+			}
+
+			for(var i = 0; i < msg.pastMissions.length; i++){
+				if(msg.pastMissions[i] == true){
+					$($('#mss').find('li')[i]).css("background-color", "green");
+			
+				}else{
+					$($('#mss').find('li')[i]).css("background-color", "red");
+				}
+			}
+
+			if(msg.team_leader == getName()){ //if team leader reloaded page destroy all guns everywhere
+				socket.emit('my event', {roomid:getroomID(),status:'dORa',code:'destroy'}) //dORa = delete or add
+			}else{
+				socket.emit('my event', {roomid:getroomID(),status:'dORa',code:'add', name:getName(), pto:msg.pto}) //dORa = delete or add
+			}
+
+			if(msg.resumeVote == 'missionvote'){
+				$('#teamvotes').fadeIn(1000);
+				$('#teamvotes button').css("pointer-events", "auto")
+
+			}else if(msg.resumeVote == 'playvote'){
+				$('.mission-card').show();
+				$('#missionvotes button').css("pointer-events", "auto")
+				if(role == 'spy'){
+					$('#missionvotes').fadeIn(1000)
+					//$("#fail").fadeIn( 300 )
+					//$("#pass").fadeIn( 300 )
+				}else if(role == 'rebel'){
+					$('#fail').css("background-color","gray")
+					$('#fail').css("opacity",".2")
+					$('#fail').css("pointer-events", "none")
+					//$("#fail").fadeIn( 300 )
+					//$("#pass").fadeIn( 300 )
+					$('#missionvotes').fadeIn(1000)
+				}
+			}
+
+		}
+
+		if(msg.status == 'dORa'){
+			if(msg.code == 'destroy'){
+				$('.gun').remove()
+
+			}else if(teamlead == getName()){ //code is add and player is leader
+				var ponM = []
+				$('.gun').each(function() {
+					ponM.push($(this).parent().attr('id'))
+				  });
+
+				  socket.emit('my event',{status:'RdORa',roomid:getroomID(),pwithGun:ponM, pto:msg.pto})
+
+			}
+		}
+
+		if(msg.status == 'RdORa' && getName() != teamlead && getName() == msg.pto){ //basically just updating guns
+			for(var i = 0; i < msg.pwithGun.length; i++){
+				
+				var img = document.createElement('img'); 
+				img.src = "/static/assets/gun.png";
+				img.style.width = '100px'
+				img.style.height = '60px'
+				img.className = "gun"
+				
+				$('#'+ msg.pwithGun[i]).append(img)
+			}
+		}
 
 		if(msg.status == 'updateGun' && getName() != teamlead){
 
@@ -244,6 +343,7 @@ socket.on( 'my response', function( msg ) {
 		vote:vote
 	})
 
+	$('#missionvotes button').css("pointer-events", "none")
 	$('#missionvotes').fadeOut(1000)
 })
 
@@ -288,6 +388,7 @@ socket.on( 'my response', function( msg ) {
 
   function yayvote(){  // emit yay
 	$('#teamvotes').fadeOut(1000)
+	$('#teamvotes button').css("pointer-events", "none")
 	socket.emit('my event', {
 		roomid:getroomID(),
 		status:'pteamvote',
@@ -298,6 +399,7 @@ socket.on( 'my response', function( msg ) {
 
   function nayvote(){ //emit nay
 	$('#teamvotes').fadeOut(1000)
+	$('#teamvotes button').css("pointer-events", "none")
 	socket.emit('my event', {
 		roomid:getroomID(),
 		status:'pteamvote',

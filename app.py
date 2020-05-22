@@ -97,6 +97,7 @@ def lobby():
 def play():
 
     if session.get('room') and players.query.filter_by(gameCode=session['room']).first():   #authenticate user trying to acess /lobby
+        
         found_room = players.query.filter_by(gameCode=session['room']).first()
         if found_room.isPlaying == False:    #in the case a user is not in a game
             return redirect(url_for('lobby'))

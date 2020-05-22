@@ -1,12 +1,14 @@
 var list = $("#players");
+var height =  screen.height/3
+//if(height > 300){height = 300}
 
 var updateLayout = function(listItems){
 	for(var i = 0; i < listItems.length; i ++){
 		var offsetAngle = 360 / listItems.length;
-		var rotateAngle = offsetAngle * i;
-		$(listItems[i]).css("transform", "rotate(" + rotateAngle + "deg) translate(0, 300px) rotate(-" + rotateAngle + "deg)")
+        var rotateAngle = offsetAngle * i;
+		$(listItems[i]).css("transform", "rotate(" + rotateAngle + "deg) translate(0, " + height + "px) rotate(-" + rotateAngle + "deg)")
     };
-    console.log($('ul#players li').length)
+    //console.log($('ul#players li').length)
 };
 
 
@@ -36,3 +38,9 @@ $(document).on("click", "#add-item", function(){
 });
 
 
+$(window).resize(function() {
+    height = $(this).height()/3
+    console.log(height)
+    var listItems = $(".list-item");
+    updateLayout(listItems)
+  });
