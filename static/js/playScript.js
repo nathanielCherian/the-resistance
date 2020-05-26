@@ -80,7 +80,7 @@ function updateLeader(teamleader){
 
 }
 
-var socket = io.connect('http://192.168.1.12:5000/');
+var socket = io.connect(window.location.origin);
 
 socket.on( 'connect', function() {
 	if(performance.navigation.type != 1){
