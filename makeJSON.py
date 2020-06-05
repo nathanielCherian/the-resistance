@@ -1,5 +1,5 @@
 import json
-from model import Player, Session, Mission, Board, createBoard, loadBoard, saveBoard, gameData
+from .model import Player, Session, Mission, Board, createBoard, loadBoard, saveBoard, gameData
 
 
 def updateLobby(pList, roomid):

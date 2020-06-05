@@ -3,7 +3,7 @@ from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 import csv #for db
 from io import StringIO
-from config import Config
+from .config import Config
 from random import randint
 import json as j
 
@@ -14,7 +14,7 @@ socketio = SocketIO(app)
 
 db = SQLAlchemy(app)
 
-import events
+
 
 class players(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
@@ -47,6 +47,8 @@ class players(db.Model):
         pJson['playerList'].remove(name)
         self.playerList = j.dumps(pJson)
         db.session.commit()
+
+import the_resistance.events
 
 
 @app.route('/', methods=['GET', 'POST'])
