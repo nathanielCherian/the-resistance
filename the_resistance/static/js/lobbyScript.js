@@ -1,5 +1,5 @@
 var list = $("#players");
-var height =  screen.height/3
+var height =  $(window).height()/3
 //if(height > 300){height = 300}
 
 var updateLayout = function(listItems){

@@ -6,13 +6,15 @@ $('.mission-card').hide();
 $('#vote-counter').hide();
 $('.overlay-desc').hide();
 
+var height =  $(window).height()/3
 
 var updateLayout = function(listItems){
 	for(var i = 0; i < listItems.length; i ++){
 		var offsetAngle = 360 / listItems.length;
-		var rotateAngle = offsetAngle * i;
-		$(listItems[i]).css("transform", "rotate(" + rotateAngle + "deg) translate(0, 300px) rotate(-" + rotateAngle + "deg)")
-	};
+        var rotateAngle = offsetAngle * i;
+		$(listItems[i]).css("transform", "rotate(" + rotateAngle + "deg) translate(0, " + height + "px) rotate(-" + rotateAngle + "deg)")
+    };
+    //console.log($('ul#players li').length)
 };
 
 plist = getplist();
@@ -22,8 +24,7 @@ for(i=0; i<plist.length; i++){
     var listItem = $("<li class='list-item' id='" + plist[i] + "'>" + plist[i] + "</li>");
 	list.append(listItem);
 	var listItems = $(".list-item");
-    updateLayout(listItems);
-    
+	updateLayout(listItems);
 }
 
 $(document).on("click", "#add-item", function(){
@@ -112,10 +113,12 @@ socket.on( 'my response', function( msg ) {
 			if(msg[getName()] == 'rebel'){
 				role = 'rebel'
 				$('#role-card').attr("src", "/static/assets/blue.png")
+				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),rgba(0, 47, 255, 0.2) ), url('static/assets/cleanfuture.gif')";
 			}else{
 				role = 'spy'
 				$('#role-card').attr("src", "/static/assets/red.png")
 				updateRoles(msg.roles) //change all spies to red
+				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),	rgb(255, 0, 0, 0.2) ), url('static/assets/cleanfuture.gif')";
 			}
 
 			for(i = 0; i < msg.gameData.length; i++){ //setting up the mission bubbles
@@ -134,13 +137,15 @@ socket.on( 'my response', function( msg ) {
 			ptoPlay = msg.ptoPlay
 			updateLeader(msg.team_leader)
 
-			if(msg[getName()] == 'rebel'){ //handles players roles on reconnect
+			if(msg[getName()] == 'rebel'){
 				role = 'rebel'
 				$('#role-card').attr("src", "/static/assets/blue.png")
+				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),rgba(0, 47, 255, 0.2) ), url('static/assets/cleanfuture.gif')";
 			}else{
 				role = 'spy'
 				$('#role-card').attr("src", "/static/assets/red.png")
 				updateRoles(msg.roles) //change all spies to red
+				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),	rgb(255, 0, 0, 0.2) ), url('static/assets/cleanfuture.gif')";
 			}
 
 			for(i = 0; i < msg.gameData.length; i++){ //setting up the mission bubbles
@@ -152,10 +157,10 @@ socket.on( 'my response', function( msg ) {
 
 			for(var i = 0; i < msg.pastMissions.length; i++){
 				if(msg.pastMissions[i] == true){
-					$($('#mss').find('li')[i]).css("background-color", "green");
+					$($('#mss').find('li')[i]).css("background-color", "rgb(0, 53, 199)");
 			
 				}else{
-					$($('#mss').find('li')[i]).css("background-color", "red");
+					$($('#mss').find('li')[i]).css("background-color", "rgb(207, 0, 0)");
 				}
 			}
 
@@ -316,9 +321,12 @@ socket.on( 'my response', function( msg ) {
 			if(msg.winner == 'rebel'){
 				$( "div.success" ).text("Resistance wins the game!")
 				$( "div.success" ).fadeIn( 300 );
+				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),rgba(0, 47, 255, 0.5) ), url('static/assets/cleanfuture.gif')";
 			}else{
 				$( "div.success" ).text("Spies wins the game!")
 				$( "div.success" ).fadeIn( 300 );
+				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),	rgb(255, 0, 0, 0.5) ), url('static/assets/cleanfuture.gif')";
+
 			}
 		}
 
@@ -377,9 +385,9 @@ socket.on( 'my response', function( msg ) {
 	  for(let key of Object.keys(roles)){
 		  console.log(key)
 		  if (roles[key] == 'spy'){
-			$('#'+key).css('background-color','red')
+			$('#'+key).css('background-color','rgb(207, 0, 0)')
 		  }else{
-			$('#'+key).css('background-color','aqua')
+			$('#'+key).css('background-color','rgb(0, 53, 199)')
 		  }
 
 		}
@@ -489,13 +497,21 @@ function closeRMV(){
 	if(msg.outcome == true){
 		$( "div.success" ).text("Resistance wins the round!")
 		$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
-		$($('#mss').find('li')[msg.lastMission]).css("background-color", "green");
+		$($('#mss').find('li')[msg.lastMission]).css("background-color", "rgb(0, 53, 199)");
 
 	}else{
 		$( "div.success" ).text("Spies wins the round!")
 		$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
-		$($('#mss').find('li')[msg.lastMission]).css("background-color", "red");
+		$($('#mss').find('li')[msg.lastMission]).css("background-color", "rgb(207, 0, 0)");
 	}
 	ptoPlay = msg.ptoPlay
 	updateLeader(msg.team_leader)
 }
+
+
+$(window).resize(function() {
+    height = $(window).height()/3
+    console.log(height)
+    var listItems = $(".list-item");
+    updateLayout(listItems)
+  });

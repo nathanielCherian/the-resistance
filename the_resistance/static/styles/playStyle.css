@@ -8,7 +8,7 @@
 
 .list-item{
 	list-style: none;
-	background-color: aqua;
+	background-color: rgb(0, 53, 199);
 	height: 100px;
 	width: 100px;
 	position: absolute;
@@ -17,6 +17,7 @@
     border-radius: 50%;
     box-shadow: black;
     transition-duration: 1s;
+    color: rgb(0, 0, 0);
 }
 
 .list-item{
@@ -24,7 +25,7 @@
 }
 
 .list-item:hover{
-    background-color: rgb(209, 243, 243);
+    background-color: rgb(75, 107, 196);
     top: 48%;
     left: 48%;
     height: 120px;
@@ -94,7 +95,8 @@
         border-radius: 50%;
         font-size: 3vw;
         text-align: center;
-        /*padding: 10%;
+        /*background-image: url('static/assets/blue.png');
+        padding: 10%;
         /*background-color: rebeccapurple;*/
         
     }
@@ -154,6 +156,8 @@
     
 html, body{
     height:100%;
-    background-image: linear-gradient(rgba(204, 204, 204, 0.63), rgba(148, 148, 148, 0.63));
+}
 
+body{
+    opacity: .85;
 }

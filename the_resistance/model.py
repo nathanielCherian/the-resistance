@@ -87,6 +87,14 @@ class Board:
         self.num_spies = self.setSpies(players)
         self.team_leader = random.randint(0,len(self.players)-1) #range?
         #print(players[self.team_leader].name)
+        self.mission_info = []
+        self.mission_list = []
+        self.plOnM = []
+        self.pmvotes = 0
+        self.curr_mission = 0
+        self.ismissionvote = False
+        self.isplayvote = False
+        self.players_voted = []
         
     def setSpies(self, players):
         nsp = {2:1, 5:2, 6:2, 7:3, 8:3, 9:3, 10:4} # temporary 2:1 for testing p.
