@@ -20,6 +20,9 @@
     left: 50%;
     border-radius: 50%;
     transition-duration: 1s;
+    color: rgb(206, 198, 198);
+    font-size: 2vh;
+    background: radial-gradient(100px 100px, rgb(0, 53, 199), #000);
 }
 
 li{
@@ -36,4 +39,32 @@ li:hover{
 
 body{
     opacity: .85;
+}
+
+h1{
+    margin-top: 1%;
+    margin-left: 30vw;
+    color: white;
+    font-size: 3vw;
+}
+
+#stgame{
+    background-color:#942ada00;
+    border-radius:28px;
+    border:2px solid #ffffff;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:20px;
+    padding:16px 31px;
+    text-decoration:none;
+    margin-top: 18vh;
+    transition-duration: 1s;
+}
+
+#stgame:hover{
+    box-shadow: 0 0 5px 3px rgb(148, 143, 143);
+    font-weight: 750;
+    margin-top: 17vh;
 }

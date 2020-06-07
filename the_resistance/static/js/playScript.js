@@ -290,6 +290,9 @@ socket.on( 'my response', function( msg ) {
 		if(msg.status == 'missionOutcome'){
 		
 			$('.pcards').remove();
+			//$("#revealmvotes").css('background-image', "" )
+			//$("#revealmvotes").css('background-image', "linear-gradient(rgba(224, 224, 224, 0.63), rgba(255, 0, 0, 0.63))" )
+
 
 			x = ""
 			for(i = 0; i < msg.results.length; i++){
@@ -303,6 +306,14 @@ socket.on( 'my response', function( msg ) {
 			}
 
 			$("#revealmvotes").fadeIn(1000)
+
+			if(msg.outcome == true){
+				$("#revealmvotes").css('background-image', "linear-gradient(rgba(224, 224, 224, 0.63), rgba(0, 47, 255, 0.5))" )
+				//print("log")
+			}else{
+				$("#revealmvotes").css('background-image', "linear-gradient(rgba(224, 224, 224, 0.63), rgba(255, 0, 0, 0.63))" )
+				//print("log")
+			}
 
 			messaage = msg
 		}
@@ -494,6 +505,7 @@ function closeRMV(){
 
 	$("#revealmvotes").fadeOut(1000)
 
+	
 	if(msg.outcome == true){
 		$( "div.success" ).text("Resistance wins the round!")
 		$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
