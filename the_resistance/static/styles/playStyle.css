@@ -17,7 +17,9 @@
     border-radius: 50%;
     box-shadow: black;
     transition-duration: 1s;
-    color: rgb(0, 0, 0);
+    color: rgb(206, 198, 198);
+    font-size: 2vh;
+    background: radial-gradient(100px 100px, rgb(0, 53, 199), #000);
 }
 
 .list-item{
@@ -30,6 +32,8 @@
     left: 48%;
     height: 120px;
     width: 120px;
+    box-shadow: 0 0 5px 3px gray;
+
 }
 
 
@@ -50,8 +54,8 @@
 
 .success {
     color: #ffffff;
-    background-color: #db3bab;
-    border-color: #d6e9c6;
+    /*background-color: #db3bab;*/
+    border-color: #ffffff;
     display: none;
 }
 
@@ -90,7 +94,7 @@
         display: block;
         width: 8vw;
         height: 8vw;
-        border: 1px solid #000;
+        border: 1px solid rgb(255, 255, 255);
         margin: 10%;
         border-radius: 50%;
         font-size: 3vw;
@@ -98,29 +102,32 @@
         /*background-image: url('static/assets/blue.png');
         padding: 10%;
         /*background-color: rebeccapurple;*/
-        
+        color: rgb(206, 198, 198);    
+        transition-duration: 1s;
+        display: inline-block;
     }
 
     #missions li:hover{
-        box-shadow: 0 0 4px 1px gray;
+        box-shadow: 0 0 5px 3px gray;
     }
 
     .buttons{
-        background-color:#932ada;
+        background-color:#942ada00;
         border-radius:28px;
-        border:1px solid #6f7470;
+        border:2px solid #ffffff;
         display:inline-block;
         cursor:pointer;
         color:#ffffff;
         font-family:Arial;
-        font-size:17px;
+        font-size:20px;
         padding:16px 31px;
         text-decoration:none;
         text-shadow:0px 1px 0px #dab3f3;
     }
 
     .buttons:hover{
-        background-color:#dab3f3;
+        box-shadow: 0 0 5px 3px rgb(148, 143, 143);
+        font-weight: 750;
     }
 
     .buttons:active {
@@ -128,11 +135,16 @@
         top:1px;
     }
 
+    
     .votebutton{
+        /*
         width: 200px;
         height: 200px;
+        border-radius: 50%;*/
         border-radius: 50%;
     }
+
+    /*
     #yay-vote{
         background-color: rgb(65, 209, 65);
     }
@@ -149,7 +161,7 @@
         position: relative;
         top: 1px;
     }
-
+*/
     li{
         transition-duration: 1s;
     }
@@ -159,5 +171,11 @@ html, body{
 }
 
 body{
-    opacity: .85;
+    /*opacity: .85;*/
 }
+
+
+@font-face {
+    font-family: zeroHour;
+    src: url("fonts/Exosphere.woff");
+  }

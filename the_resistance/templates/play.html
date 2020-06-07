@@ -6,6 +6,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/playStyle.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
     <title>The Resistance</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='assets/icon.png') }}" 
     type="image/x-icon">
@@ -15,7 +17,7 @@
 
     <style>
         body {
-          background-image: url('static/assets/cleanfuture.gif');
+          background-image: url('static/assets/skylinebackground.jpg');
           background-color: black;
           background-repeat: no-repeat;
           background-attachment: fixed; 
@@ -24,7 +26,7 @@
         </style>
 
 
-    <body>
+<body style="font-family: zeroHour">
 
 
         <div class="container-fluid text-center">  
@@ -38,7 +40,7 @@
         <div class="row content">
 
         <div class="col-sm-2" style="height: fit-content;">
-            <img src="{{ url_for('static', filename='assets/blue.png') }}" alt="resistance" id="role-card" style="width: 200px;height: 280px; margin-top: 7%">
+            <img src="{{ url_for('static', filename='assets/blue.png') }}" alt="resistance" id="role-card" style="width: 200px;height: 280px; margin-top: 7%;">
 
             <!-- 
             <div style="margin-top: 40%;">
@@ -47,9 +49,9 @@
             </div>
             -->
 
-            <button style="margin-top: 20%;" id="fin-team" onclick="finTeam()" class="buttons">Finalize Team</button>
+            <button style="margin-top: 20%; font-family: zeroHour;" id="fin-team" onclick="finTeam()" class="buttons">Finalize Team</button>
             
-            <div id="vote-counter">
+            <div id="vote-counter" style="color: white;">
                 <p style="font-size: 90px; margin-bottom: 0px; margin-top: 0px;" id="vleft"><b>3</b><br></p>
                 <p style="font-size: 30px;">votes left!</p>
             </div>
@@ -62,10 +64,12 @@
 
 
 
-        <div class="col-sm-8 text-center" style="padding-top: 5%;">
+        <div class="col-sm-8 text-center" style="padding-top: 7%;">
             
             <ul id="list" style="margin: auto;"></ul>
-            <button id="add-item">Add item</button>
+
+            <!-- 
+            <button id="add-item">Add item</button>-->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 
@@ -96,8 +100,8 @@
 
         <div class="overlay-desc" style="background-color: gray; opacity: .8;" id="teamvotes">
 
-                <button style="margin: 20px;" id="yay-vote" class = 'votebutton' onclick="yayvote()">Yay!</button>
-                <button style="margin: 20px;" id="nay-vote" class = 'votebutton' onclick="nayvote()">Nay!</button>
+                <button style="margin: 20px;" id="yay-vote" class = 'votebutton' onclick="yayvote()"><img src="{{ url_for('static', filename='assets/check.png') }}"></button>
+                <button style="margin: 20px;" id="nay-vote" class = 'votebutton' onclick="nayvote()"><img src="{{ url_for('static', filename='assets/x_mark.png') }}"></button>
          </div>
 
 
@@ -108,7 +112,7 @@
         </div>
 
         <div class="overlay-desc" style="background-color: gray; opacity: .8;" id="revealmvotes">
-            <button onclick="closeRMV()">Close</button>
+            <button onclick="closeRMV()" style="background-color: rgba(255, 255, 255, 0); border: 4px solid #ffffff; border-radius: 30%; font-size: 6vh; color: white; font-weight: 500;">X</button>
         </div>
 
         

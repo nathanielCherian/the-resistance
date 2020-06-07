@@ -32,7 +32,7 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     if json['roomid'] == session['room']: # CHECK FOR ROOM NUMBER
 
         found_player = players.query.filter_by(gameCode=session['room']).first() #context of elemnt in database
-        if ~found_player:
+        if not found_player:
             socketio.emit('my response', {'roomid':session['room'], 'status':'returnHome'})
 
 

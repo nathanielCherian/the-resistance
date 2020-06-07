@@ -21,7 +21,7 @@ plist = getplist();
 console.log(plist)
 
 for(i=0; i<plist.length; i++){
-    var listItem = $("<li class='list-item' id='" + plist[i] + "'>" + plist[i] + "</li>");
+    var listItem = $("<li class='list-item' id='" + plist[i] + "'>" + "<p style= 'margin-top: -25px;'>" +  plist[i] + "</p></li>");
 	list.append(listItem);
 	var listItems = $(".list-item");
 	updateLayout(listItems);
@@ -65,8 +65,8 @@ function updateLeader(teamleader){
 	
 	var img = document.createElement('img'); 
 	img.src = "/static/assets/star.png";
-	img.style.width = '40px'
-	img.style.height = '40px'
+	img.style.width = '50px'
+	img.style.height = '50px'
 	img.id = 't-leader'
 	document.getElementById(teamleader).appendChild(img)
 	if(teamleader == getName()){
@@ -113,12 +113,12 @@ socket.on( 'my response', function( msg ) {
 			if(msg[getName()] == 'rebel'){
 				role = 'rebel'
 				$('#role-card').attr("src", "/static/assets/blue.png")
-				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),rgba(0, 47, 255, 0.2) ), url('static/assets/cleanfuture.gif')";
+				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),rgba(0, 47, 255, 0.2) ), url('static/assets/opac2.png')";
 			}else{
 				role = 'spy'
 				$('#role-card').attr("src", "/static/assets/red.png")
 				updateRoles(msg.roles) //change all spies to red
-				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),	rgb(255, 0, 0, 0.2) ), url('static/assets/cleanfuture.gif')";
+				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),	rgb(255, 0, 0, 0.2) ), url('static/assets/opac2.png')";
 			}
 
 			for(i = 0; i < msg.gameData.length; i++){ //setting up the mission bubbles
@@ -140,12 +140,12 @@ socket.on( 'my response', function( msg ) {
 			if(msg[getName()] == 'rebel'){
 				role = 'rebel'
 				$('#role-card').attr("src", "/static/assets/blue.png")
-				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),rgba(0, 47, 255, 0.2) ), url('static/assets/cleanfuture.gif')";
+				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),rgba(0, 47, 255, 0.2) ), url('static/assets/opac2.png')";
 			}else{
 				role = 'spy'
 				$('#role-card').attr("src", "/static/assets/red.png")
 				updateRoles(msg.roles) //change all spies to red
-				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),	rgb(255, 0, 0, 0.2) ), url('static/assets/cleanfuture.gif')";
+				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),	rgb(255, 0, 0, 0.2) ), url('static/assets/opac2.png')";
 			}
 
 			for(i = 0; i < msg.gameData.length; i++){ //setting up the mission bubbles
@@ -157,10 +157,10 @@ socket.on( 'my response', function( msg ) {
 
 			for(var i = 0; i < msg.pastMissions.length; i++){
 				if(msg.pastMissions[i] == true){
-					$($('#mss').find('li')[i]).css("background-color", "rgb(0, 53, 199)");
+					$($('#mss').find('li')[i]).css("background", "radial-gradient(100px 100px, rgb(0, 53, 199), #000)");
 			
 				}else{
-					$($('#mss').find('li')[i]).css("background-color", "rgb(207, 0, 0)");
+					$($('#mss').find('li')[i]).css("background", "radial-gradient(100px 100px, rgb(207, 0, 0), #000)");
 				}
 			}
 
@@ -321,11 +321,11 @@ socket.on( 'my response', function( msg ) {
 			if(msg.winner == 'rebel'){
 				$( "div.success" ).text("Resistance wins the game!")
 				$( "div.success" ).fadeIn( 300 );
-				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),rgba(0, 47, 255, 0.5) ), url('static/assets/cleanfuture.gif')";
+				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),rgba(0, 47, 255, 0.5) ), url('static/assets/opac2.png')";
 			}else{
 				$( "div.success" ).text("Spies wins the game!")
 				$( "div.success" ).fadeIn( 300 );
-				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),	rgb(255, 0, 0, 0.5) ), url('static/assets/cleanfuture.gif')";
+				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),	rgb(255, 0, 0, 0.5) ), url('static/assets/opac2.png')";
 
 			}
 		}
@@ -385,9 +385,9 @@ socket.on( 'my response', function( msg ) {
 	  for(let key of Object.keys(roles)){
 		  console.log(key)
 		  if (roles[key] == 'spy'){
-			$('#'+key).css('background-color','rgb(207, 0, 0)')
+			$('#'+key).css('background','radial-gradient(100px 100px, rgb(207, 0, 0), #000)')
 		  }else{
-			$('#'+key).css('background-color','rgb(0, 53, 199)')
+			$('#'+key).css('background','radial-gradient(100px 100px, rgb(0, 53, 199), #000)')
 		  }
 
 		}
@@ -497,12 +497,12 @@ function closeRMV(){
 	if(msg.outcome == true){
 		$( "div.success" ).text("Resistance wins the round!")
 		$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
-		$($('#mss').find('li')[msg.lastMission]).css("background-color", "rgb(0, 53, 199)");
+		$($('#mss').find('li')[msg.lastMission]).css("background", "radial-gradient(100px 100px, rgb(0, 53, 199), #000)");
 
 	}else{
 		$( "div.success" ).text("Spies wins the round!")
 		$( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
-		$($('#mss').find('li')[msg.lastMission]).css("background-color", "rgb(207, 0, 0)");
+		$($('#mss').find('li')[msg.lastMission]).css("background", "radial-gradient(100px 100px, rgb(207, 0, 0), #000)");
 	}
 	ptoPlay = msg.ptoPlay
 	updateLeader(msg.team_leader)

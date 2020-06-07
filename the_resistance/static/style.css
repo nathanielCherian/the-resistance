@@ -7,3 +7,7 @@ body{
   src: url("fonts/Exosphere.woff");
 }
 
+@font-face {
+  font-family: zeroHour;
+  src: url("fonts/zero-hour.woff");
+}
