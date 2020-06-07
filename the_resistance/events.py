@@ -32,6 +32,9 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     if json['roomid'] == session['room']: # CHECK FOR ROOM NUMBER
 
         found_player = players.query.filter_by(gameCode=session['room']).first() #context of elemnt in database
+        if ~found_player:
+            socketio.emit('my response', {'roomid':session['room'], 'status':'returnHome'})
+
 
         if json['status'] == 'leave':
 
@@ -157,3 +160,5 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
                 if message['status'] == 'gameOver': #If game is over destroy session so player cant join back
                     session.pop('name', None)
                     session.pop('room', None)
+                    db.session.delete(found_player)
+                    db.session.commit()
