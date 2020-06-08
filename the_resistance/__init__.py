@@ -17,11 +17,12 @@ db = SQLAlchemy(app)
 
 
 class players(db.Model):
-    _id = db.Column("id", db.Integer, primary_key=True)
-    gameCode = db.Column("gameCode", db.String(100),unique=True)
-    playerList = db.Column("playerList", db.String(150),unique=False)
-    isPlaying = db.Column("isPlaying", db.Boolean,unique=False)
-    board = db.Column("board", db.LargeBinary)
+    id = db.Column("id", db.Integer, primary_key=True)
+    gameCode = db.Column("gameCode", db.String(10),unique=True)
+    playerList = db.Column("playerList", db.String(255),unique=False)
+    isPlaying = db.Column("isPlaying", db.String(1),unique=False)
+    board = db.Column("board", db.LargeBinary, unique=False)
+
 
 
     def __init__(self, gameCode, playerList, isPlaying):
@@ -60,7 +61,7 @@ def home():
         session['name'] = request.form['uname'].strip(' ')
         found_room = players.query.filter_by(gameCode=session['room']).first()
 
-        if(found_room) and found_room.isPlaying == False: #found waiting room succesfully
+        if(found_room) and found_room.isPlaying == 'n': #found waiting room succesfully
             if session['name'] not in found_room.get_list(): #unique player check
                 return redirect(url_for('lobby'))
             else:
@@ -81,7 +82,7 @@ def lobby():
     if session.get('room') and players.query.filter_by(gameCode=session['room']).first():   #authenticate user trying to acess /lobby
 
         found_room = players.query.filter_by(gameCode=session['room']).first()
-        if found_room.isPlaying == True: #in the case a user in a game presses the back button
+        if found_room.isPlaying == 'y': #in the case a user in a game presses the back button
             return redirect(url_for('play'))
 
 
@@ -101,13 +102,13 @@ def play():
     if session.get('room') and players.query.filter_by(gameCode=session['room']).first():   #authenticate user trying to acess /lobby
         
         found_room = players.query.filter_by(gameCode=session['room']).first()
-        if found_room.isPlaying == False:    #in the case a user is not in a game
+        if found_room.isPlaying == 'n':    #in the case a user is not in a game
             return redirect(url_for('lobby'))
 
 
         print('name:    ' + session['name'])
         plist = players.query.filter_by(gameCode=session['room']).first().get_list()
-        players.query.filter_by(gameCode=session['room']).first().isPlaying = True
+        players.query.filter_by(gameCode=session['room']).first().isPlaying = 'y'
         db.session.commit()
 
         plst = []
@@ -143,7 +144,7 @@ def getstarted():
         session['room'] = str(rand) 
 
         pData = j.dumps({'playerList':[session['name']]})
-        player = players(gameCode=session['room'], playerList= pData, isPlaying=False)
+        player = players(gameCode=session['room'], playerList= pData, isPlaying='n')
         db.session.add(player)
         db.session.commit()
         return redirect(url_for('lobby'))

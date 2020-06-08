@@ -337,7 +337,13 @@ socket.on( 'my response', function( msg ) {
 				$( "div.success" ).text("Spies wins the game!")
 				$( "div.success" ).fadeIn( 300 );
 				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),	rgb(255, 0, 0, 0.5) ), url('static/assets/opac2.png')";
+			}
 
+			if(msg.outcome == true){
+				$($('#mss').find('li')[msg.lastMission]).css("background", "radial-gradient(100px 100px, rgb(0, 53, 199), #000)");
+		
+			}else{
+				$($('#mss').find('li')[msg.lastMission]).css("background", "radial-gradient(100px 100px, rgb(207, 0, 0), #000)");
 			}
 		}
 

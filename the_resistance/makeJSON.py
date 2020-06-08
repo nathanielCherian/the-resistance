@@ -78,7 +78,7 @@ def missionOutcome(b, roomid):   #will return mission outcome as well as instruc
             pData = {player.name:player.role}
             d.update(pData)
             l.update(pData)
-        d.update({'roles':l})
+        d.update({'roles':l, 'outcome':b.mission_list[-1].outcome})
 
     else:
         d.update({

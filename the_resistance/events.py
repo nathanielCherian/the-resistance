@@ -51,7 +51,7 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
             socketio.emit('my response', d)
 
         if json['status'] == 'letMeIn':
-            found_player.isPlaying = True
+            found_player.isPlaying = 'y'
             db.session.commit() #oh the shame
 
         
