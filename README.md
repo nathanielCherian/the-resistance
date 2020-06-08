@@ -1,5 +1,7 @@
 # the-resistance
-Resistance (social deduction game) online
+Resistance (social deduction game) online 
+
+Currently live on http://resistance.sylicia.com/
 
 ## To run:
 
