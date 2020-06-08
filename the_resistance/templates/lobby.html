@@ -27,7 +27,8 @@
       
   <body style="font-family: zeroHour">
 
-    <h1></h1>
+    <h1 onclick="copyCode()"></h1>
+    <h2>copied!</h2>
     
     <!-- 
     <ul id="users"></ul> -->
@@ -81,7 +82,7 @@
       var socket = io.connect(window.location.origin);
       var roomID = '{{ roomID }}';
       var name= '{{ name }}';
-      $("h1").html("Lobby for " + roomID);
+      $("h1").html("" + roomID);
       $("#users").append('<li>' + 'test' + '</li>');
 
       socket.on( 'connect', function() {

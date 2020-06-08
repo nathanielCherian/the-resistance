@@ -2,6 +2,8 @@ var list = $("#players");
 var height =  $(window).height()/3
 //if(height > 300){height = 300}
 
+$('h2').hide()
+
 var updateLayout = function(listItems){
 	for(var i = 0; i < listItems.length; i ++){
 		var offsetAngle = 360 / listItems.length;
@@ -37,6 +39,18 @@ $(document).on("click", "#add-item", function(){
 	updateLayout(listItems);
 });
 
+
+function copyCode(){
+
+    var textarea = document.createElement('textarea')
+    textarea.value = $('h1').text()
+    document.body.appendChild(textarea)
+    textarea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textarea)
+
+    $('h2').fadeIn( 500 ).delay( 1500 ).fadeOut( 400 );
+}
 
 $(window).resize(function() {
     height = $(this).height()/3

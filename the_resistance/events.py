@@ -57,17 +57,21 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
         
         if json['status'] == 'connectToPlay':
             if json['name'] == found_player.get_list()[0]: #check if user is host
-                sendMes = {'roomid' : json['roomid'], 'status':'playCommand'}
+                if found_player.board == None:
+                    sendMes = {'roomid' : json['roomid'], 'status':'playCommand'}
 
-                b = createBoard(found_player.get_list()) #loading players into object returning an object
-                found_player.board = saveBoard(b) #serializing object into binary and saving in DB
-                db.session.commit()
+                    b = createBoard(found_player.get_list()) #loading players into object returning an object
+                    found_player.board = saveBoard(b) #serializing object into binary and saving in DB
+                    db.session.commit()
 
-                pdata = playData1(b, session['room'])
+                    pdata = playData1(b, session['room'])
 
-                socketio.emit('my response', sendMes) #sending play command
+                    socketio.emit('my response', sendMes) #sending play command
 
-                socketio.emit('my response', pdata) #sending players and their roles
+                    socketio.emit('my response', pdata) #sending players and their roles
+                else:
+                    b = loadBoard(found_player.board)
+                    emit('my response', reloaded(b, session['room'], json['name']))
 
             else: #redirect user
                 print("redirect")
@@ -123,6 +127,7 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
                 b.plOnM = []
                 found_player.board = saveBoard(b)
                 db.session.commit()
+                socketio.emit('my response', json)
                 socketio.emit('my response', rotateLeader(b,session['room'])) #emits command to change leader and reset screens
 
             elif result == True:
@@ -130,6 +135,7 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
                 found_player.board = saveBoard(b)
                 db.session.commit()
 
+                socketio.emit('my response', json)
                 socketio.emit('my response', {
                     'roomid':session['room'],
                     'status':'collectMVotes',
