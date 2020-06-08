@@ -1,6 +1,6 @@
-from the_resistance.app import socketio
+from the_resistance import socketio
 from flask_socketio import emit
-from the_resistance.app import players, session, db
+from the_resistance import players, session, db
 from .makeJSON import updateLobby, playData1, rotateLeader, missionOutcome, reloaded
 from .model import Player, Session, Mission, Board, createBoard, loadBoard, saveBoard
 import json as j

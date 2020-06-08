@@ -1,4 +1,5 @@
 import os
+import the_resistance.secrets as secrets
 
 class Config(object):
     SECRET_KEY = 'password'

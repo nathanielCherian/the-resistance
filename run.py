@@ -1,4 +1,4 @@
-from the_resistance.app import app, socketio, db
+from the_resistance import app, socketio, db
 
 if __name__ == '__main__':
     db.create_all()
