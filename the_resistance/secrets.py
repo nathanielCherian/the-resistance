@@ -1,4 +1,4 @@
-dbhost = 'hostip'
-dbuser = 'username'
-dbpass = 'password'
-dbname = 'databasename'
+dbhost = 'myip'
+dbuser = 'user'
+dbpass = 'sql'
+dbname = 're'
