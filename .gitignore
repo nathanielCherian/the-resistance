@@ -1,2 +1,3 @@
 users.sqlite3
 **/__pycache__
+the_resistance/secrets.py
