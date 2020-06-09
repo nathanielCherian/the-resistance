@@ -58,7 +58,7 @@ function updateLeader(teamleader){
 	$('li').css("pointer-events", "auto")
 	$('#t-leader').remove()
 
-	$('#teamvotes button').css("pointer-events", "auto")
+	$('#teamvotes img').css("pointer-events", "auto")
 	$('#missionvotes button').css("pointer-events", "auto")
 
 
@@ -417,7 +417,7 @@ socket.on( 'my response', function( msg ) {
 
   function yayvote(){  // emit yay
 	$('#teamvotes').fadeOut(1000)
-	$('#teamvotes button').css("pointer-events", "none")
+	$('#teamvotes img').css("pointer-events", "none")
 	socket.emit('my event', {
 		roomid:getroomID(),
 		status:'pteamvote',

@@ -43,7 +43,7 @@ body{
 
 h1, h2{
     margin-top: 1%;
-    margin-left: 44vw;
+    /*margin-left: 44vw;*/
     color: white;
     font-size: 3vw;
     transition-duration: 0.5s;
@@ -56,7 +56,7 @@ h1:hover{
 
 h2{
     font-size: 2vh;
-    margin-left: 51vw;
+    /*margin-left: 51vw;*/
     margin-top: -1vh;
     transition-duration: 0s;
 }

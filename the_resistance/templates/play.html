@@ -100,8 +100,8 @@
 
         <div class="overlay-desc" style="background-color: gray; opacity: .8;" id="teamvotes">
 
-                <button style="margin: 20px;" id="yay-vote" class = 'votebutton' onclick="yayvote()"><img  alt='agree!' src="{{ url_for('static', filename='assets/check.png') }}"></button>
-                <button style="margin: 20px;" id="nay-vote" class = 'votebutton' onclick="nayvote()"><img alt='disagree!' src="{{ url_for('static', filename='assets/x_mark.png') }}"></button>
+                <img  alt='agree!' src="{{ url_for('static', filename='assets/tick.png') }}" style="margin: 20px;" id="yay-vote" class = 'votebutton' onclick="yayvote()">
+                <img alt='disagree!' src="{{ url_for('static', filename='assets/cross.png') }}" style="margin: 20px;" id="nay-vote" class = 'votebutton' onclick="nayvote()"> 
          </div>
 
 

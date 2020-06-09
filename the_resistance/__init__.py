@@ -3,7 +3,7 @@ from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 import csv #for db
 from io import StringIO
-from .config import Config
+from the_resistance.config import Config
 from random import randint
 import json as j
 import re
