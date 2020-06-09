@@ -6,6 +6,7 @@ from io import StringIO
 from .config import Config
 from random import randint
 import json as j
+import re
 
 
 app = Flask(__name__)
@@ -51,26 +52,41 @@ class players(db.Model):
 
 import the_resistance.events
 
+#-------- To make sure name is 'clean' before passing through---------
+def checkRe(name):
+    reg = re.compile(r'[^a-zA-Z0-9.]')
+    return not bool(reg.search(name))
+#-----------------------------------------------------------------------
 
+@app.route('/home', methods=['GET', 'POST'])
 @app.route('/', methods=['GET', 'POST'])
 def home():
 
+    
     if request.method == "POST":
 
         session['room'] = request.form['code'].strip(' ')
         session['name'] = request.form['uname'].strip(' ')
         found_room = players.query.filter_by(gameCode=session['room']).first()
 
-        if(found_room) and found_room.isPlaying == 'n': #found waiting room succesfully
-            if session['name'] not in found_room.get_list(): #unique player check
-                return redirect(url_for('lobby'))
+        if(found_room) and found_room.isPlaying == 'n': #found waiting room succesfully and name is clean
+
+            if checkRe(request.form['uname'].strip(' ')):
+
+                if session['name'] not in found_room.get_list(): #unique player check
+                    return redirect(url_for('lobby'))
+                else:
+                    session.pop('name', None)
+                    session.pop('room', None)
+                    flash("Whoops! that name is already taken!")
+                    return redirect(url_for('home'))
             else:
-                session.pop('name', None)
-                session.pop('room', None)
-                return redirect(url_for('home'))
+                flash("Whoops! your name can only have letters and numbers!")
+
         else:
             session.pop('name', None)
             session.pop('room', None)
+            flash("This room is not accepting players!")
             return redirect(url_for('home'))
 
     return render_template('home.html')
@@ -131,25 +147,30 @@ def play():
 def getstarted():
 
     if request.method == 'POST':
-        name = request.form['name']
-        session['name'] = name
-        usedRooms = []
-        for player in players.query.all():
-            usedRooms.append(player.gameCode)
-        
-        rand = randint(100000,999999)
-        while rand in usedRooms:
+        if checkRe(request.form['name'].strip(' ')):
+            name = request.form['name']
+            session['name'] = name
+            usedRooms = []
+            for player in players.query.all():
+                usedRooms.append(player.gameCode)
+            
             rand = randint(100000,999999)
+            while rand in usedRooms:
+                rand = randint(100000,999999)
 
-        session['room'] = str(rand) 
+            session['room'] = str(rand) 
 
-        pData = j.dumps({'playerList':[session['name']]})
-        player = players(gameCode=session['room'], playerList= pData, isPlaying='n')
-        db.session.add(player)
-        db.session.commit()
-        return redirect(url_for('lobby'))
+            pData = j.dumps({'playerList':[session['name']]})
+            player = players(gameCode=session['room'], playerList= pData, isPlaying='n')
+            db.session.add(player)
+            db.session.commit()
+            return redirect(url_for('lobby'))
+
+        else:
+            flash("Whoops! your name can only have letters and numbers!")
 
     return render_template("getstarted.html", values=players.query.all())
+
 
 
 

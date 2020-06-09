@@ -7,20 +7,60 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/getStartedStyle.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <title>The Resistance</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='assets/icon.png') }}" 
     type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename='assets/icon.png') }}"
     type="image/x-icon">  </head>
 
+    <style>
+      body {
+        background-image: linear-gradient(rgba(224, 224, 224, 0.63), rgba(224, 224, 224, 0.63)), url('static/assets/bground.gif');
+        background-color: black;
+        background-repeat: no-repeat;
+        background-attachment: fixed; 
+        background-size: 100% 100%;
+      }
+      </style>
 
   <body style="font-family: cofleyMain">
 
-    <h1>Start a new Game</h1>
-    <form action="#" name="createForm" onsubmit="return validateForm()" method="POST">
-      <input type="text" placeholder="name" name="name">
-      <input type="submit" value="start game">
-    </form>
+
+    <div class="overlay-top-center">
+      <div class="container-fluid">
+        <div class="text-center alert-box warning" >You are the team Leader!</div>
+      </div>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+
+    <script>
+      var message = '{{ message }}'
+      $( "div.warning" ).text(message)
+      $( "div.warning" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+      console.log(message)
+    </script>
+
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+    <div class="overlay-desc">
+      <form action="#" style="text-align: center;" class='box' autocomplete="off" name="createForm" onsubmit="return validateForm()" method="POST">
+        <span>New Game!</span>
+        <p><input type="text" placeholder="name" name="name" maxlength="15"></p>
+        <input type="submit" value="start game" style="font-size: 25px;">
+      </form>
+   </div>
+
+   <div class="overlay-tright">
+    <button class="gs" onclick="location.href = 'home';">Lobby</button>
+  </div>
 
 
 

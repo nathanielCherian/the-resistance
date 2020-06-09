@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/homeStyle.css') }}">
     <title>The Resistance</title>
@@ -26,9 +27,13 @@
 
   <body style="font-family: cofleyMain">
 
+    <div class="overlay-top-center">
+      <div class="container-fluid">
+        <div class="text-center alert-box warning" >You are the team Leader!</div>
+      </div>
+    </div>
 
 
-    
     <div class="container-fluid text-center" style="width: 100%; margin: 0px; padding: 0px; border: 0px;">
      
         <div style="background-color: rgb(0, 0, 0); opacity: .3;">
@@ -43,6 +48,20 @@
 
         </div>
         
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          {% for message in messages %}
+
+          <script>
+            var message = '{{ message }}'
+            $( "div.warning" ).text(message)
+            $( "div.warning" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+            console.log(message)
+          </script>
+
+          {% endfor %}
+          {% endif %}
+          {% endwith %}
 
 
         <div class="overlay-desc">
@@ -55,7 +74,7 @@
          </div>
 
          <div class="overlay-tright">
-          <button class="gs" onclick="location.href = 'getstarted';">get started</button>
+          <button class="gs" onclick="location.href = '/getstarted';">get started</button>
         </div>
 
 
