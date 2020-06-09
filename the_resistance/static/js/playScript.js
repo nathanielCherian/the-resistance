@@ -68,6 +68,7 @@ function updateLeader(teamleader){
 	img.style.width = '50px'
 	img.style.height = '50px'
 	img.id = 't-leader'
+	img.alt = 'team-leader'
 	document.getElementById(teamleader).appendChild(img)
 	if(teamleader == getName()){
 		$( "div.success" ).text("You are the team leader, Choose a team!")
@@ -113,10 +114,12 @@ socket.on( 'my response', function( msg ) {
 			if(msg[getName()] == 'rebel'){
 				role = 'rebel'
 				$('#role-card').attr("src", "/static/assets/blue.png")
+
 				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),rgba(0, 47, 255, 0.2) ), url('static/assets/opac2.png')";
 			}else{
 				role = 'spy'
 				$('#role-card').attr("src", "/static/assets/red.png")
+
 				updateRoles(msg.roles) //change all spies to red
 				document.body.style.backgroundImage = "linear-gradient(rgba(224, 224, 224, 0),	rgb(255, 0, 0, 0.2) ), url('static/assets/opac2.png')";
 			}
@@ -231,6 +234,7 @@ socket.on( 'my response', function( msg ) {
 					img.style.width = '100px'
 					img.style.height = '60px'
 					img.className = "gun"
+					img.alt = 'player-selected'
 					
 					$('#'+ msg.name).append(img)
 				}else if(msg.action == 'remove'){ //toggle OFF
@@ -302,7 +306,7 @@ socket.on( 'my response', function( msg ) {
 					x = 'fail'
 				}
 				console.log(x)
-				$("#revealmvotes").append("<img src='/static/assets/" + x + ".png' style='margin: 10px;' class='pcards'></img>")
+				$("#revealmvotes").append("<img alt=" + x + " src='/static/assets/" + x + ".png' style='margin: 10px;' class='pcards'></img>")
 			}
 
 			$("#revealmvotes").fadeIn(1000)
