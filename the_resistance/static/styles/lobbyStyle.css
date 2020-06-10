@@ -44,6 +44,7 @@ body{
 h1, h2{
     margin-top: 1%;
     /*margin-left: 44vw;*/
+    padding-left: 5vw;
     color: white;
     font-size: 3vw;
     transition-duration: 0.5s;

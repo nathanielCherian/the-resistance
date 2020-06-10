@@ -120,7 +120,7 @@
           }
 
           if (name == msg.host){
-            if (msg.players.length >= 2){
+            if (msg.players.length == 2 || msg.players.length >=5){ //the 2 is only for testing purposes
               startGame.innerHTML = "Start Game";
               startGame.setAttribute("onClick", 'clicked()');
               startGame.style.display = "block";

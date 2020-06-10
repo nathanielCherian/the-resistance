@@ -306,7 +306,7 @@ socket.on( 'my response', function( msg ) {
 					x = 'fail'
 				}
 				console.log(x)
-				$("#revealmvotes").append("<img alt=" + x + " src='/static/assets/" + x + ".png' style='margin: 10px;' class='pcards'></img>")
+				$("#revealmvotes").append("<img alt=" + x + " src='/static/assets/" + x + ".png' style='margin: 10px; border-radius: 10%' class='pcards'></img>")
 			}
 
 			$("#revealmvotes").fadeIn(1000)
@@ -349,6 +349,8 @@ socket.on( 'my response', function( msg ) {
 			}else{
 				$($('#mss').find('li')[msg.lastMission]).css("background", "radial-gradient(100px 100px, rgb(207, 0, 0), #000)");
 			}
+
+			window.onbeforeunload = null;
 		}
 
     }
@@ -537,3 +539,9 @@ $(window).resize(function() {
     var listItems = $(".list-item");
     updateLayout(listItems)
   });
+
+
+  /*
+window.onbeforeunload = function() {
+	return "Do not leave";
+}; */

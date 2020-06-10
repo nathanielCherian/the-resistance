@@ -94,6 +94,15 @@
     justify-content: center;
     }
 
+    .overlay-tright{
+        position: absolute;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        width: 100%;
+    }
+
     #missions li{
         display: block;
         width: 8vw;

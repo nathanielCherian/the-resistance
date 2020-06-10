@@ -65,27 +65,25 @@ def home():
     
     if request.method == "POST":
 
-        session['room'] = request.form['code'].strip(' ')
-        session['name'] = request.form['uname'].strip(' ')
-        found_room = players.query.filter_by(gameCode=session['room']).first()
+        code, name = request.form['code'].strip(' '), request.form['uname'].strip(' ')
+
+        found_room = players.query.filter_by(gameCode=code).first()
 
         if(found_room) and found_room.isPlaying == 'n': #found waiting room succesfully and name is clean
 
-            if checkRe(request.form['uname'].strip(' ')):
+            if checkRe(name):
 
-                if session['name'] not in found_room.get_list(): #unique player check
+                if name not in found_room.get_list(): #unique player 
+                    session['room'] = code
+                    session['name'] = name
                     return redirect(url_for('lobby'))
                 else:
-                    session.pop('name', None)
-                    session.pop('room', None)
                     flash("Whoops! that name is already taken!")
                     return redirect(url_for('home'))
             else:
                 flash("Whoops! your name can only have letters and numbers!")
 
         else:
-            session.pop('name', None)
-            session.pop('room', None)
             flash("This room is not accepting players!")
             return redirect(url_for('home'))
 
