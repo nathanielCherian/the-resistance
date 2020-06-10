@@ -70,19 +70,22 @@ def home():
         found_room = players.query.filter_by(gameCode=code).first()
 
         if(found_room) and found_room.isPlaying == 'n': #found waiting room succesfully and name is clean
-
-            if checkRe(name):
-
-                if name not in found_room.get_list(): #unique player 
-                    session['room'] = code
-                    session['name'] = name
-                    return redirect(url_for('lobby'))
+           
+            if len(found_room.get_list()) < 10: #check for lobby capacity, has to be one less as current player has not joined yet 
+                print("\n\n", len(found_room.get_list()))
+                if checkRe(name):
+                    if name not in found_room.get_list(): #unique player 
+                        session['room'] = code
+                        session['name'] = name
+                        return redirect(url_for('lobby'))
+                    else:
+                        flash("Whoops! that name is already taken!")
+                        return redirect(url_for('home'))
                 else:
-                    flash("Whoops! that name is already taken!")
-                    return redirect(url_for('home'))
-            else:
-                flash("Whoops! your name can only have letters and numbers!")
+                    flash("Whoops! your name can only have letters and numbers!")
 
+            else:
+                flash("Lobby is full!")
         else:
             flash("This room is not accepting players!")
             return redirect(url_for('home'))

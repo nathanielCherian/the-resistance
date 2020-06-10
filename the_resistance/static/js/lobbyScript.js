@@ -1,5 +1,6 @@
 var list = $("#players");
 var height =  $(window).height()/3
+
 //if(height > 300){height = 300}
 
 $('h2').hide()
@@ -10,7 +11,13 @@ var updateLayout = function(listItems){
         var rotateAngle = offsetAngle * i;
 		$(listItems[i]).css("transform", "rotate(" + rotateAngle + "deg) translate(0, " + height + "px) rotate(-" + rotateAngle + "deg)")
     };
-    //console.log($('ul#players li').length)
+
+    if ($('ul#players li').length == 10){
+        $('#player_cap').css("visibility", 'visible')
+    }else{
+        $('#player_cap').css("visibility", 'hidden')
+    }
+    console.log($('ul#players li').length)
 };
 
 

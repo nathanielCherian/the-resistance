@@ -82,3 +82,8 @@ h2{
     font-weight: 750;
     margin-top: 17vh;
 }
+
+#player_cap{
+    visibility: hidden;
+    transition-duration: .5s;
+}
