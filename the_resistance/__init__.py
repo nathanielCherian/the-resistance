@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import csv #for db
 from io import StringIO
 from the_resistance.config import Config
+from the_resistance.deploy import is_deploy
 from random import randint
 import json as j
 import re
@@ -189,5 +190,6 @@ def view():
 
 
 if __name__ == '__main__':
-    db.create_all()
+    if not is_deploy:
+        db.create_all()
     socketio.run(app, debug=True, host='0.0.0.0')
